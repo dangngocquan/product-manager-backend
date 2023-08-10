@@ -1,0 +1,25 @@
+{
+  "name": "product_manager_backend",
+  "version": "1.0.0",
+  "description": "Product manager backend use nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dangngocquan/product_manager_backend.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "dangngocquan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dangngocquan/product_manager_backend/issues"
+  },
+  "homepage": "https://github.com/dangngocquan/product_manager_backend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
