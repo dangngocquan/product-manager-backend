@@ -9,6 +9,8 @@ async function getCategories(page = 1) {
     })
 
     var categories = helper.emptyOrRows(rows);
+
+    return categories;
 }
 
 
