@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     res.send("Home");
 });
 
-app.get('/categories', routerCategories);
+app.use('/categories', routerCategories);
 
 
 app.listen(port, () => {
