@@ -16,9 +16,14 @@ app.use(cors({
 }))
 
 
+const routerCategories = require('./routes/categories');
+
+
 app.get('/', (req, res) => {
     res.send("Home");
 });
+
+app.get('/categories', routerCategories);
 
 
 app.listen(port, () => {
