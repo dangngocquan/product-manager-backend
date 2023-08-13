@@ -7,9 +7,9 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-app.get('/', (req, res) => {
-    res.send("Hello");
-});
+const routerCategories = require('./routes/categories')
+
+app.get('/', routerCategories);
 
 app.listen(port, () => {
     console.log("Listening on port " + port);

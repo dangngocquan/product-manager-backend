@@ -1,5 +1,5 @@
 {
-  "name": "product_manager_backend",
+  "name": "product-manager-backend",
   "version": "1.0.0",
   "description": "Product manager backend use nodejs",
   "main": "index.js",

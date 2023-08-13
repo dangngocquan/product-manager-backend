@@ -1,10 +1,14 @@
 const categoriesServices = require('../services/categories');
 
-async function get(red, res, next) {
+async function get(req, res, next) {
     try {
-        res.json(categoriesServices.getCategories(1));
+        res.json(await categoriesServices.getCategories(req.params.page));
     } catch (err) {
         console.error(`Error while getting categories`, err.message);
         next(err);
     }
+}
+
+module.exports = {
+    get
 }

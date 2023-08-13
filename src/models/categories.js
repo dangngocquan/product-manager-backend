@@ -9,19 +9,19 @@ const categories = db.define(
             primaryKey: true
         },
         name: {
-            type: Sequelize.VARCHAR(255)
+            type: Sequelize.STRING
         },
         image: {
             type: Sequelize.TEXT
         },
         level: {
-            type: Sequelize.INT
+            type: Sequelize.INTEGER
         },
         parent_category_id: {
             type: Sequelize.BIGINT
         },
         time_added: {
-            type: Sequelize.DATETIME
+            type: Sequelize.DATE
         },
         status: {
             type: Sequelize.ENUM,

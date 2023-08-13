@@ -3,14 +3,16 @@ const helper = require('../utils/helper');
 const general = require('../configs/general');
 
 async function getCategories(page = 1) {
-    var rows = categoriesModel.findAllAndCount({
-        offset: helper.getOffset(page, general.listPerPage),
-        limit: general.listPerPage
-    })
+    var rows = await categoriesModel.findAll({
+        offset: 0,
+        limit: 5
+    });
 
     var categories = helper.emptyOrRows(rows);
 
-    return categories;
+    return {
+        categories
+    };
 }
 
 
