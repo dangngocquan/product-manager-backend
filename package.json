@@ -2,23 +2,21 @@
   "name": "product-manager-backend",
   "version": "1.0.0",
   "description": "Product manager backend use nodejs",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/dangngocquan/product_manager_backend.git"
+    "url": "git+https://github.com/dangngocquan/product-manager-backend.git"
   },
-  "keywords": [
-    "nodejs"
-  ],
   "author": "dangngocquan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dangngocquan/product_manager_backend/issues"
+    "url": "https://github.com/dangngocquan/product-manager-backend/issues"
   },
-  "homepage": "https://github.com/dangngocquan/product_manager_backend#readme",
+  "homepage": "https://github.com/dangngocquan/product-manager-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
