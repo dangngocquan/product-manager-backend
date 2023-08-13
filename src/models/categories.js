@@ -24,7 +24,8 @@ const categories = db.define(
             type: Sequelize.DATETIME
         },
         status: {
-            type: Sequelize.ENUM("normal", "hidden", "deleted")
+            type: Sequelize.ENUM,
+            values: ["normal", "hidden", "deleted"]
         }
     },
     {
