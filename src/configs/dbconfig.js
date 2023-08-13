@@ -1,10 +1,15 @@
-const config = {
-    db: {
-        host: "localhost",
-        user: "root",
-        password: "nkw1k42k3",
-        datbase: "product_manager"
-    }
-}
+const sequelize = require('sequelize');
 
-module.exports = config;
+const dbconfig = new Sequelize(
+    {
+        dialect: "mysql",
+        username: process.env.DB_USER || "root",
+        password: process.env.DB_PASS || "nkw1k42k3",
+        host: process.env.DB_HOST || "localhost",
+        port: process.env.DB_PORT || 3306,
+        database: process.env.DB_DATABASE || "product_manager",
+        logging: (log) => console.log("logging:", log)
+    }
+)
+
+module.exports = dbconfig;
