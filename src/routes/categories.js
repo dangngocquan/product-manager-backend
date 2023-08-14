@@ -11,7 +11,7 @@ router.get('/level/:level', controllerCategories.getByLevel);
 router.get('/id/:id/children', controllerCategories.getChildren);
 router.get('/tree', controllerCategories.getTree);
 
-// [POST]
+// [POST] 
 router.post('/', controllerCategories.createNew);
 
 // [PATCH]

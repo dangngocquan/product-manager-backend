@@ -91,7 +91,7 @@ async function updateCategoryById(id = 0, formData = {}) {
         `UPDATE categories ` + 
         `SET ${newData} ` +
         `WHERE id = ${id}`;
-    await db.query(sql);
+    await db.query(sql); 
 }
 
 
