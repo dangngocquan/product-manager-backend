@@ -4,11 +4,18 @@ const controllerCategories = require('../controllers/categories');
 
 
 
-
+// [GET]
 router.get('/page/:page', controllerCategories.getByPage);
 router.get('/id/:id', controllerCategories.getById);
 router.get('/level/:level', controllerCategories.getByLevel);
-router.get('/:id/children', controllerCategories.getChildren);
+router.get('/id/:id/children', controllerCategories.getChildren);
+router.get('/tree', controllerCategories.getTree);
+
+// [POST]
+router.post('/', controllerCategories.createNew);
+
+// [PATCH]
+router.patch('/id/:id', controllerCategories.updateById);
 
 module.exports = router;
 
