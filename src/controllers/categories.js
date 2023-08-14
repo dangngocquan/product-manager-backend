@@ -2,6 +2,8 @@ const { get } = require('../routes/categories');
 const serviceCategories = require('../services/categories');
 
 
+
+
 // [GET]
 
 async function getByPage(req, res, next) {
@@ -15,7 +17,7 @@ async function getByPage(req, res, next) {
 
 async function getById(req, res, next) {
     try {
-        res.json(await serviceCategories.getCategoriesById(req.params.id));
+        res.json(await serviceCategories.getCategoryById(req.params.id));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
         next(err);
@@ -33,7 +35,7 @@ async function getByLevel(req, res, next) {
 
 async function getChildren(req, res, next) {
     try {
-        res.json(await serviceCategories.getCategoriesChildren(req.params.id));
+        res.json(await serviceCategories.getChildrenOfCategoryById(req.params.id));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
         next(err);
@@ -50,10 +52,13 @@ async function getTree(req, res, next) {
 }
 
 
+
+
+
 // [POST]
 async function createNew(req, res, next) {
     try {
-        await serviceCategories.createNewCategories(req.body);
+        await serviceCategories.createNewCategory(req.body);
         res.send(JSON.stringify({
             "status": 1,
             "message": "Insert new categories successfully."
@@ -90,6 +95,28 @@ async function updateById(req, res, next) {
 }
 
 
+
+
+
+// [DELETE]
+async function deleteById(req, res, next) {
+    try {
+        await serviceCategories.deleteCategoryById(req.params.id);
+        res.send(JSON.stringify({
+            "status": 1,
+            "message": "Delete category successfully."
+        }));
+    } catch (err) {
+        console.error("Error while deleting category. ",  err.message);
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": "Delete category failed."
+        }));
+        next(err);
+    }
+}
+
+
 module.exports = {
     // [GET]
     getByPage: getByPage,
@@ -100,5 +127,7 @@ module.exports = {
     // [POST]
     createNew: createNew,
     // [PATCH]
-    updateById: updateById
+    updateById: updateById,
+    //[DELETE]
+    deleteById: deleteById
 }

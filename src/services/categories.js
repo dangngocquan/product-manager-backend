@@ -15,7 +15,7 @@ async function getCategoriesByPage(page = 1) {
     }
 }
 
-async function getCategoriesById(id = 1) {
+async function getCategoryById(id = 1) {
     const sql = `SELECT * FROM categories WHERE id = ${id}`;
     const rows = await db.query(sql);
 
@@ -33,7 +33,7 @@ async function getCategoriesByLevel(level = 1) {
     }
 }
 
-async function getCategoriesChildren(id = 1) {
+async function getChildrenOfCategoryById(id = 1) {
     const sql = `SELECT * FROM categories WHERE parent_category_id = ${id}`;
     const rows = await db.query(sql);
 
@@ -67,14 +67,23 @@ async function getCategoriesTree() {
     }
 }
 
+
+
+
+
 // [POST]
-async function createNewCategories(formData) {
+
+async function createNewCategory(formData) {
     var sql = 
         `INSERT INTO categories (name, image, level, parent_category_id) ` + 
         `VALUE (\"${formData.name}\", \"${formData.image}\", ${formData.level}, ${formData.parent_category_id})`;
 
     await db.query(sql);
 }
+
+
+
+
 
 // [PATCH]
 async function updateCategoryById(id = 0, formData = {}) {
@@ -95,15 +104,29 @@ async function updateCategoryById(id = 0, formData = {}) {
 }
 
 
+
+
+
+// [DELETE]
+async function deleteCategoryById(id = 0) {
+    var sql = 
+        `DELETE FROM categories ` + 
+        `WHERE id = ${id}`;
+    await db.query(sql); 
+}
+
+
 module.exports = {
     // [GET]
     getCategoriesByPage: getCategoriesByPage,
-    getCategoriesById: getCategoriesById,
+    getCategoryById: getCategoryById,
     getCategoriesByLevel: getCategoriesByLevel,
-    getCategoriesChildren: getCategoriesChildren,
+    getChildrenOfCategoryById: getChildrenOfCategoryById,
     getCategoriesTree: getCategoriesTree,
     // [POST]
-    createNewCategories: createNewCategories,
+    createNewCategory: createNewCategory,
     // [PATCH]
-    updateCategoryById: updateCategoryById
+    updateCategoryById: updateCategoryById,
+    // [DELETE]
+    deleteCategoryById: deleteCategoryById
 }

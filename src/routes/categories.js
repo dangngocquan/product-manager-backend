@@ -11,11 +11,24 @@ router.get('/level/:level', controllerCategories.getByLevel);
 router.get('/id/:id/children', controllerCategories.getChildren);
 router.get('/tree', controllerCategories.getTree);
 
+
+
 // [POST] 
 router.post('/', controllerCategories.createNew);
 
+
+
 // [PATCH]
 router.patch('/id/:id', controllerCategories.updateById);
+
+
+
+// [DELETE]
+router.delete('/id/:id', controllerCategories.deleteById);
+
+
+
+
 
 module.exports = router;
 
