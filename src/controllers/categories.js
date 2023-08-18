@@ -8,45 +8,90 @@ const serviceCategories = require('../services/categories');
 
 async function getByPage(req, res, next) {
     try {
-        res.json(await serviceCategories.getCategoriesByPage(req.params.page));
+        var categories = await serviceCategories.getCategoriesByPage(req.params.page);
+        res.send(JSON.stringify({
+            "status": 1,
+            "message": `Get categories page ${req.params.page} successfully.`,
+            "categories": categories
+        }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": `Get categories page ${req.params.page} failed.`
+        }));
         next(err);
     }
 }
 
 async function getById(req, res, next) {
     try {
-        res.json(await serviceCategories.getCategoryById(req.params.id));
+        var categories = await serviceCategories.getCategoryById(req.params.id);
+        res.send(JSON.stringify({
+            "status": 1,
+            "message": `Get category id ${req.params.id} successfully.`,
+            "categories": categories
+        }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": `Get category id ${req.params.id} failed.`
+        }));
         next(err);
     }
 }
 
 async function getByLevel(req, res, next) {
     try {
-        res.json(await serviceCategories.getCategoriesByLevel(req.params.level));
+        var categories = await serviceCategories.getCategoriesByLevel(req.params.level);
+        res.send(JSON.stringify({
+            "status": 1,
+            "message": `Get category level ${req.params.level} successfully.`,
+            "categories": categories
+        }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": `Get category level ${req.params.level} failed.`
+        }));
         next(err);
     }
 }
 
 async function getChildren(req, res, next) {
     try {
-        res.json(await serviceCategories.getChildrenOfCategoryById(req.params.id));
+        var categories = await serviceCategories.getChildrenOfCategoryById(req.params.id);
+        res.send(JSON.stringify({
+            "status": 1,
+            "message": `Get children of category has id ${req.params.id} successfully.`,
+            "children": categories
+        }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": `Get children of category has id ${req.params.id} failed.`
+        }));
         next(err);
     }
 }
 
 async function getTree(req, res, next) {
     try {
-        res.json(await serviceCategories.getCategoriesTree());
+        var categories = await serviceCategories.getCategoriesTree();
+        res.send(JSON.stringify({
+            "status": 1,
+            "message": `Get category tree successfully.`,
+            "categories": categories
+        }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": `Get category tree failed.`
+        }));
         next(err);
     }
 }

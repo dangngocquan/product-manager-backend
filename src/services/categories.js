@@ -53,7 +53,7 @@ async function getChildrenOfCategoryById(id = 1) {
 
 async function getCategories() {
     const sql = 
-        `SELECT * FROM categories` + 
+        `SELECT * FROM categories ` + 
         `WHERE status = \"normal\"`;
     const rows = await db.query(sql);
 
