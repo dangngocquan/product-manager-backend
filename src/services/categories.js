@@ -7,7 +7,10 @@ const helper = require('../utils/helper');
 async function getCategoriesByPage(page = 1) {
     const limit = general.listPerPage;
     const offset = helper.getOffset(page, general.listPerPage);
-    const sql = `SELECT * FROM categories LIMIT ${limit} OFFSET ${offset}`;
+    const sql = 
+        `SELECT * FROM categories ` + 
+        `WHERE status = \"normal\" ` + 
+        `LIMIT ${limit} OFFSET ${offset}`;
     const rows = await db.query(sql);
 
     return {
@@ -16,7 +19,9 @@ async function getCategoriesByPage(page = 1) {
 }
 
 async function getCategoryById(id = 1) {
-    const sql = `SELECT * FROM categories WHERE id = ${id}`;
+    const sql = 
+        `SELECT * FROM categories ` + 
+        `WHERE status = \"normal\" AND id = ${id}`;
     const rows = await db.query(sql);
 
     return {
@@ -25,7 +30,9 @@ async function getCategoryById(id = 1) {
 }
 
 async function getCategoriesByLevel(level = 1) {
-    const sql = `SELECT * FROM categories WHERE level = ${level}`;
+    const sql = 
+        `SELECT * FROM categories ` + 
+        `WHERE status = \"normal\" AND level = ${level}`;
     const rows = await db.query(sql);
 
     return {
@@ -34,7 +41,9 @@ async function getCategoriesByLevel(level = 1) {
 }
 
 async function getChildrenOfCategoryById(id = 1) {
-    const sql = `SELECT * FROM categories WHERE parent_category_id = ${id}`;
+    const sql = 
+        `SELECT * FROM categories ` + 
+        `WHERE status = \"normal\" AND parent_category_id = ${id}`;
     const rows = await db.query(sql);
 
     return {
@@ -43,7 +52,9 @@ async function getChildrenOfCategoryById(id = 1) {
 }
 
 async function getCategories() {
-    const sql = `SELECT * FROM categories`;
+    const sql = 
+        `SELECT * FROM categories` + 
+        `WHERE status = \"normal\"`;
     const rows = await db.query(sql);
 
     return {
@@ -110,8 +121,9 @@ async function updateCategoryById(id = 0, formData = {}) {
 // [DELETE]
 async function deleteCategoryById(id = 0) {
     var sql = 
-        `DELETE FROM categories ` + 
-        `WHERE id = ${id}`;
+    `UPDATE categories` + 
+    `SET status=\"deleted\"` +
+    `WHERE id = ${id}`;
     await db.query(sql); 
 }
 
