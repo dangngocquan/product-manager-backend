@@ -1,11 +1,19 @@
-const mysql = require('mysql2/promise');
+const {Client} = require('pg');
 const dbconfig = require('../configs/dbconfig');
 const helper = require('../utils/helper');
 
-async function query(sql, params) {
-    const connection = await mysql.createConnection(dbconfig);
-    const [results, ] = await connection.execute(sql, params);
-    return helper.emptyOrRows(results);
+async function query(sql) {
+    try {
+        const client = new Client(dbconfig);
+        await client.connect();
+        console.log("Connected to database");
+        const results = await client.query(sql);
+        await client.end();
+        return helper.emptyOrRows(results);
+    } catch (e) {
+        console.log(e);
+    }
+    
 }
 
 module.exports = {
