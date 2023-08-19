@@ -9,7 +9,7 @@ async function query(sql) {
         console.log("Connected to database");
         const results = await client.query(sql);
         await client.end();
-        return helper.emptyOrRows(results);
+        return helper.emptyOrRows(results.rows);
     } catch (e) {
         console.log(e);
     }
