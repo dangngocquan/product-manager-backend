@@ -8,6 +8,7 @@ const serviceCategories = require('../services/categories');
 async function getByPage(req, res, next) {
     try {
         var categories = await serviceCategories.getCategoriesByPage(req.params.page);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": `Get categories page ${req.params.page} successfully.`,
@@ -15,6 +16,7 @@ async function getByPage(req, res, next) {
         }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": `Get categories page ${req.params.page} failed.`
@@ -26,6 +28,7 @@ async function getByPage(req, res, next) {
 async function getById(req, res, next) {
     try {
         var categories = await serviceCategories.getCategoryById(req.params.id);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": `Get category id ${req.params.id} successfully.`,
@@ -33,6 +36,7 @@ async function getById(req, res, next) {
         }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": `Get category id ${req.params.id} failed.`
@@ -44,6 +48,7 @@ async function getById(req, res, next) {
 async function getByLevel(req, res, next) {
     try {
         var categories = await serviceCategories.getCategoriesByLevel(req.params.level);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": `Get category level ${req.params.level} successfully.`,
@@ -51,6 +56,7 @@ async function getByLevel(req, res, next) {
         }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": `Get category level ${req.params.level} failed.`
@@ -62,6 +68,7 @@ async function getByLevel(req, res, next) {
 async function getChildren(req, res, next) {
     try {
         var categories = await serviceCategories.getChildrenOfCategoryById(req.params.id);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": `Get children of category has id ${req.params.id} successfully.`,
@@ -69,6 +76,7 @@ async function getChildren(req, res, next) {
         }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": `Get children of category has id ${req.params.id} failed.`
@@ -80,6 +88,7 @@ async function getChildren(req, res, next) {
 async function getTree(req, res, next) {
     try {
         var categories = await serviceCategories.getCategoriesTree();
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": `Get category tree successfully.`,
@@ -87,6 +96,7 @@ async function getTree(req, res, next) {
         }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": `Get category tree failed.`
@@ -103,12 +113,14 @@ async function getTree(req, res, next) {
 async function createNew(req, res, next) {
     try {
         await serviceCategories.createNewCategory(req.body);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": "Insert new categories successfully."
         }));
     } catch (err) {
         console.error("Error while inserting new categories. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": "Insert new categories failed."
@@ -124,12 +136,14 @@ async function createNew(req, res, next) {
 async function updateById(req, res, next) {
     try {
         await serviceCategories.updateCategoryById(req.params.id, req.body);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": "Update categories successfully."
         }));
     } catch (err) {
         console.error("Error while updating new categories. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": "Update new categories failed."
@@ -146,12 +160,14 @@ async function updateById(req, res, next) {
 async function deleteById(req, res, next) {
     try {
         await serviceCategories.deleteCategoryById(req.params.id);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 1,
             "message": "Delete category successfully."
         }));
     } catch (err) {
         console.error("Error while deleting category. ",  err.message);
+        res.type('json');
         res.send(JSON.stringify({
             "status": 0,
             "message": "Delete category failed."
