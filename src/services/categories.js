@@ -122,7 +122,7 @@ async function updateCategoryById(id = 0, formData = {}) {
 async function deleteCategoryById(id = 0) {
     var sql = 
     `UPDATE categories` + 
-    `SET status=\"deleted\"` +
+    `SET status=\'deleted\'` +
     `WHERE id = ${id}`;
     await db.query(sql); 
 }
