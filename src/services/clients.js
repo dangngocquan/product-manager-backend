@@ -19,7 +19,7 @@ async function createNewClient(formData) {
     }
     data = data.join(", ");
     var sql = 
-        `INSERT INTO accounts (account_id, nickname, email, phone_number, gender, birthday, portrait) ` + 
+        `INSERT INTO clients (account_id, nickname, email, phone_number, gender, birthday, portrait) ` + 
         `VALUES (${data})`;
 
     await db.query(sql);
