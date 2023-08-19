@@ -9,13 +9,25 @@ const helper = require('../utils/helper');
 
 // [POST]
 async function createNewAccount(formData = {}) {
+    // Insert into table `accounts`
     var sql = 
-        `INSERT INTO accounts (username, password) ` + 
-        `VALUES (\'${formData.username}\', \'${formData.password}\') ` + 
-        `RETURNING id`;
-
-    var [account, ] = await db.query(sql);
-    return account.id;
+        `WITH new_account AS (` + 
+        `    INSERT INTO accounts (username, password) ` + 
+        `    VALUES (\'${formData.username}\', \'${formData.password}\') ` + 
+        `    RETURNING id` + 
+        `) ` + 
+        `INSERT INTO clients (account_id, nickname, email, phone_number, gender, birthday, portrait) ` + 
+        `VALUES (` +
+            `(SELECT id FROM new_account), ` + 
+            `\'${formData.nickname}\', ` + 
+            `\'${formData.email}\', ` + 
+            `\'${formData.phone_number}\', ` +
+            `\'${formData.gender}\', ` +
+            `TO_TIMESTAMP(${formData.birthday}), ` + 
+            `\'${formData.portrait}\'` + 
+        `)`;
+    
+    await db.query(sql);
 }
 
 
