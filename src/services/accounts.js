@@ -3,7 +3,16 @@ const general = require('../configs/general');
 const helper = require('../utils/helper');
 
 // [GET]
-
+async function getIdByUsername(username) {
+    var sql =   
+        `SELECT id FROM accounts ` +
+        `WHERE status != 'deleted' AND username = '${username}'`;
+    
+    var ids = await db.query(sql);
+    return {
+        ids
+    }
+}
 
 
 
@@ -43,6 +52,8 @@ async function createNewAccount(formData = {}) {
 
 
 module.exports = {
+    // [GET]
+    getIdByUsername,
     // [POST]
     createNewAccount
 }
