@@ -62,35 +62,8 @@ async function getCategories() {
     }
 }
 
-async function getCategoriesNames() {
-    const sql = 
-        `SELECT id, name FROM categories ` + 
-        `WHERE status = \'normal\'`;
-    const rows = await db.query(sql);
-
-    return {
-        categories: rows
-    }
-}
-
 async function getCategoriesTree() {
     var categories = (await getCategories()).categories;
-    var tree = [];
-    categories.forEach(function(category) {
-        if (category.level == 1) tree.push(category);
-        category.children = [];
-        categories.forEach(function(child) {
-            if (child.parent_category_id == category.id) category.children.push(child);
-        })
-    })
-
-    return {
-        categories: tree
-    }
-}
-
-async function getCategoriesTreeNames() {
-    var categories = (await getCategoriesNames()).categories;
     var tree = [];
     categories.forEach(function(category) {
         if (category.level == 1) tree.push(category);
@@ -162,7 +135,6 @@ module.exports = {
     getCategoriesByLevel: getCategoriesByLevel,
     getChildrenOfCategoryById: getChildrenOfCategoryById,
     getCategoriesTree: getCategoriesTree,
-    getCategoriesTreeNames,
     // [POST]
     createNewCategory: createNewCategory,
     // [PATCH]

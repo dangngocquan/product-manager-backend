@@ -10,7 +10,6 @@ router.get('/id/:id', controllerCategories.getById);
 router.get('/level/:level', controllerCategories.getByLevel);
 router.get('/id/:id/children', controllerCategories.getChildren);
 router.get('/tree', controllerCategories.getTree);
-router.get('/tree-names', controllerCategories.getTreeNames);
 
 
 
