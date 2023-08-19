@@ -9,7 +9,7 @@ const controller = require('../controllers/accounts');
 
 
 // [POST]
-
+router.post('/', controller.createNew);
 
 
 

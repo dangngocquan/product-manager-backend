@@ -2,6 +2,9 @@ const service = require('../services/accounts');
 const serviceClients = require('../services/clients');
 
 // [GET]
+
+
+// [POST]
 async function createNew(req, res, next) {
     try {
         var formData1 = {
@@ -36,10 +39,6 @@ async function createNew(req, res, next) {
         next(err);
     }
 } 
-
-
-// [POST]
-
 
 
 
