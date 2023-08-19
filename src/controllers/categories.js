@@ -1,4 +1,3 @@
-const { get } = require('../routes/categories');
 const serviceCategories = require('../services/categories');
 
 

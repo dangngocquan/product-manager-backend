@@ -17,6 +17,7 @@ app.use(cors({
 
 
 const routerCategories = require('./routes/categories');
+const routerAccounts = require('./routes/accounts');
 
 
 app.get('/', (req, res) => {
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/categories', routerCategories);
+app.use('/accounts', routerAccounts);
 
 
 app.listen(port, () => {
