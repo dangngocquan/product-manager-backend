@@ -96,6 +96,24 @@ async function getTree(req, res, next) {
     }
 }
 
+async function getTreeNames(req, res, next) {
+    try {
+        var categories = await serviceCategories.getCategoriesTreeNames();
+        res.send(JSON.stringify({
+            "status": 1,
+            "message": `Get category tree names successfully.`,
+            "categories": categories
+        }));
+    } catch (err) {
+        console.error("Error while getting categories. ",  err.message);
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": `Get category tree names failed.`
+        }));
+        next(err);
+    }
+}
+
 
 
 
@@ -169,6 +187,7 @@ module.exports = {
     getByLevel: getByLevel,
     getChildren: getChildren,
     getTree: getTree,
+    getTreeNames,
     // [POST]
     createNew: createNew,
     // [PATCH]
