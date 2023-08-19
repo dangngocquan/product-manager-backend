@@ -11,8 +11,7 @@ async function createNew(req, res, next) {
             "username": req.body.username,
             "password": req.body.password
         };
-        var account = await service.createNewAccount(formData1);
-        console.log(account);
+        var id = await service.createNewAccount(formData1);
 
         var formData2 = {
             "account_id": id,
@@ -28,7 +27,8 @@ async function createNew(req, res, next) {
         res.type('json');
         res.send(JSON.stringify({
             "status": 1,
-            "message": "Create new account successfully."
+            "message": "Create new account successfully.",
+            "acc" : acc
         }));
     } catch (err) {
         console.error("Error while creating new account. ",  err.message);

@@ -14,7 +14,8 @@ async function createNewAccount(formData = {}) {
         `VALUES (\'${formData.username}\', \'${formData.password}\') ` + 
         `RETURNING id`;
 
-    await db.query(sql);
+    var [account, ] = await db.query(sql);
+    return account.id;
 }
 
 
