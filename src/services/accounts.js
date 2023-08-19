@@ -8,10 +8,11 @@ const helper = require('../utils/helper');
 
 
 // [POST]
-async function createNewAccount(formData) {
+async function createNewAccount(formData = {}) {
     var sql = 
         `INSERT INTO accounts (username, password) ` + 
-        `VALUES (\'${formData.username}\', \'${formData.password}\')`;
+        `VALUES (\'${formData.username}\', \'${formData.password}\') ` + 
+        `RETURNING id`;
 
     await db.query(sql);
 }
