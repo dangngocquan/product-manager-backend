@@ -11,7 +11,8 @@ async function createNew(req, res, next) {
             "username": req.body.username,
             "password": req.body.password
         };
-        var [{id}, ] = await service.createNewAccount(formData1);
+        var account = await service.createNewAccount(formData1);
+        console.log(account);
 
         var formData2 = {
             "account_id": id,
