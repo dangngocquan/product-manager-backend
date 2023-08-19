@@ -9,7 +9,7 @@ async function getCategoriesByPage(page = 1) {
     const offset = helper.getOffset(page, general.listPerPage);
     const sql = 
         `SELECT * FROM categories ` + 
-        `WHERE status = \"normal\" ` + 
+        `WHERE status = \'normal\' ` + 
         `LIMIT ${limit} OFFSET ${offset}`;
     const rows = await db.query(sql);
 
@@ -21,7 +21,7 @@ async function getCategoriesByPage(page = 1) {
 async function getCategoryById(id = 1) {
     const sql = 
         `SELECT * FROM categories ` + 
-        `WHERE status = \"normal\" AND id = ${id}`;
+        `WHERE status = \'normal\' AND id = ${id}`;
     const rows = await db.query(sql);
 
     return {
@@ -32,7 +32,7 @@ async function getCategoryById(id = 1) {
 async function getCategoriesByLevel(level = 1) {
     const sql = 
         `SELECT * FROM categories ` + 
-        `WHERE status = \"normal\" AND level = ${level}`;
+        `WHERE status = \'normal\' AND level = ${level}`;
     const rows = await db.query(sql);
 
     return {
@@ -43,7 +43,7 @@ async function getCategoriesByLevel(level = 1) {
 async function getChildrenOfCategoryById(id = 1) {
     const sql = 
         `SELECT * FROM categories ` + 
-        `WHERE status = \"normal\" AND parent_category_id = ${id}`;
+        `WHERE status = \'normal\' AND parent_category_id = ${id}`;
     const rows = await db.query(sql);
 
     return {
@@ -54,7 +54,7 @@ async function getChildrenOfCategoryById(id = 1) {
 async function getCategories() {
     const sql = 
         `SELECT * FROM categories ` + 
-        `WHERE status = \"normal\"`;
+        `WHERE status = \'normal\'`;
     const rows = await db.query(sql);
 
     return {
@@ -87,7 +87,7 @@ async function getCategoriesTree() {
 async function createNewCategory(formData) {
     var sql = 
         `INSERT INTO categories (name, image, level, parent_category_id) ` + 
-        `VALUE (\"${formData.name}\", \"${formData.image}\", ${formData.level}, ${formData.parent_category_id})`;
+        `VALUE (\'${formData.name}\', \'${formData.image}\', ${formData.level}, ${formData.parent_category_id})`;
 
     await db.query(sql);
 }
