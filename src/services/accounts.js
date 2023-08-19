@@ -11,7 +11,7 @@ const helper = require('../utils/helper');
 async function createNewAccount(formData) {
     var sql = 
         `INSERT INTO accounts (username, password) ` + 
-        `VALUE (\'${formData.username}\', \'${formData.password}\')`;
+        `VALUES (\'${formData.username}\', \'${formData.password}\')`;
 
     await db.query(sql);
 }

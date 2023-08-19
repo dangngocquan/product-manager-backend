@@ -87,7 +87,7 @@ async function getCategoriesTree() {
 async function createNewCategory(formData) {
     var sql = 
         `INSERT INTO categories (name, image, level, parent_category_id) ` + 
-        `VALUE (\'${formData.name}\', \'${formData.image}\', ${formData.level}, ${formData.parent_category_id})`;
+        `VALUES (\'${formData.name}\', \'${formData.image}\', ${formData.level}, ${formData.parent_category_id})`;
 
     await db.query(sql);
 }
@@ -101,7 +101,7 @@ async function updateCategoryById(id = 0, formData = {}) {
     var newData = [];
     for (var key in formData) {
         if (typeof formData[key] === 'string') {
-            newData.push(key + " = \"" + formData[key] + "\"");
+            newData.push(key + " = \'" + formData[key] + "\'");
         } else if (typeof formData[key] === 'number') {
             newData.push(key + " = " + formData[key]);
         }
