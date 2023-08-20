@@ -1,5 +1,6 @@
 const auth = require('./auth');
 const serviceShops = require('./shops');
+const serviceProducts = require('./products');
 
 async function isAdmin(token) {
     const decoded = await auth.authenticateToken(token);
@@ -22,7 +23,13 @@ async function isOwnerShop(token, shopId) {
     
 }
 
+async function isOwnerProduct(token, productId) {
+    var shopId = (await serviceProducts.getProductsById(productId)).products[0].shop_id;
+    return (await isOwnerShop(token, shopId));
+}
+
 module.exports = {
     isAdmin,
-    isOwnerShop
+    isOwnerShop,
+    isOwnerProduct
 }

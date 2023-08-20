@@ -18,6 +18,19 @@ async function getProductsByCategoryId(categoryId) {
     }
 }
 
+async function getProductsById(id) {
+    var sql = 
+        `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description ` + 
+        `FROM products ` + 
+        `WHERE status = \'normal\' AND id = ${id}`;
+
+    var products = await db.query(sql);
+
+    return {
+        products: products
+    }
+}
+
 
 
 // [POST]
@@ -27,6 +40,13 @@ async function addNewProduct(formData = {}) {
         `VALUES (${formData.shop_id}, \'${formData.name}\', \'${formData.image}\', ` + 
         `\'${formData.price}\', ${formData.stock}, \'${formData.description}\')`;
 
+    await db.query(sql);
+}
+
+async function addCategoryTypeForProduct(productId, categoryId) {
+    var sql = 
+        `INSERT INTO products_of_categories (category_id, product_id) ` + 
+        `VALUES (${categoryId}, ${productId})`;
     await db.query(sql);
 }
 
@@ -43,7 +63,9 @@ async function addNewProduct(formData = {}) {
 module.exports = {
     // [GET]
     getProductsByCategoryId,
+    getProductsById,
     // [POST]
-    addNewProduct
+    addNewProduct,
+    addCategoryTypeForProduct
 }
 
