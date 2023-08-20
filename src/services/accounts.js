@@ -1,6 +1,4 @@
 const db = require('./db');
-const general = require('../configs/general');
-const helper = require('../utils/helper');
 
 // [GET]
 async function getIdByUsername(username) {

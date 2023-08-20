@@ -1,5 +1,6 @@
 const service = require('../services/accounts');
 const auth = require('../services/auth');
+const serviceHistoryLogins = require('../services/historyLogins');
 
 // [GET]
 async function checkExistUsername(req, res, next) {
@@ -31,6 +32,11 @@ async function loginAccount(req, res, next) {
         if (accountInformations.length > 0) {
             var [account, ] = accountInformations;
             const token = await auth.generateAccessToken(account);
+
+            // Save history login
+            await serviceHistoryLogins.insertHistory(account.id);
+
+            // Return response to client
             res.send(JSON.stringify({
                 "status": 1,
                 "message": "Login account successful.",
