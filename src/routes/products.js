@@ -4,7 +4,7 @@ const controller = require('../controllers/products');
 
 
 // [GET]
-
+router.get('/categoryId/:categoryId', controller.getProductsByCategoryId)
 
 
 // [POST]

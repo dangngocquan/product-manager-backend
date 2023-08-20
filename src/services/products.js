@@ -2,6 +2,21 @@ const db = require('./db');
 const role = require('./role');
 
 // [GET]
+async function getProductsByCategoryId(categoryId) {
+    var sql = 
+        `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description ` + 
+        `FROM products ` + 
+        `WHERE status = \'normal\' AND id IN (` + 
+            `SELECT product_id FROM products_of_categories ` + 
+            `WHERE category_id = ${categoryId}` + 
+        `)`;
+
+    var products = await db.query(sql);
+
+    return {
+        products: products
+    }
+}
 
 
 
@@ -26,6 +41,8 @@ async function addNewProduct(formData = {}) {
 
 
 module.exports = {
+    // [GET]
+    getProductsByCategoryId,
     // [POST]
     addNewProduct
 }
