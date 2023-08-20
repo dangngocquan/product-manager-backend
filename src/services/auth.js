@@ -8,7 +8,7 @@ async function generateAccessToken(payload) {
         payload, 
         process.env.TOKEN_SECRET, 
         {
-            expiresInSeconds: 86400
+            expiresIn: '6h'
         }
     );
 }

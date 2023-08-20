@@ -14,6 +14,24 @@ async function getIdByUsername(username) {
     }
 }
 
+async function loginAccount(formData) {
+    var sql = 
+        `WITH account AS (` + 
+            `SELECT ` + 
+                `id, username, password, status, type, EXTRACT(EPOCH FROM time_registered) AS time_registered ` +
+            `FROM accounts ` + 
+            `WHERE status != 'deleted' AND username = '${formData.username}' AND password = '${formData.password}'` +
+        `) ` +
+        `SELECT ` + 
+            `account.id AS id, username, password, status, type, time_registered, ` +
+            `nickname, email, phone_number, gender, EXTRACT(EPOCH FROM birthday) AS birthday, portrait ` +
+        `FROM account JOIN clients ON account.id = clients.account_id`;
+
+    const accountInformations = await db.query(sql);
+    return {
+        accountInformations: accountInformations
+    }
+}
 
 
 // [POST]
@@ -54,6 +72,7 @@ async function createNewAccount(formData = {}) {
 module.exports = {
     // [GET]
     getIdByUsername,
+    loginAccount,
     // [POST]
     createNewAccount
 }

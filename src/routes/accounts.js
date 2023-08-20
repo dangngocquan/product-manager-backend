@@ -10,6 +10,7 @@ router.get('/check-username', controller.checkExistUsername);
 
 // [POST]
 router.post('/', controller.createNew);
+router.post('/login', controller.loginAccount);
 
 
 
