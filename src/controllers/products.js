@@ -107,6 +107,33 @@ async function addProductImage(req, res, next) {
 }
 
 
+
+async function addProductVariation(req, res, next) {
+    try {
+        res.type('json');
+        if (await role.isOwnerProduct(req.body.token, req.body.product_id)) {
+            await service.addProductVariation(req.body.product_id, req.body.attributes, req.body.price);
+            res.status(200).send(JSON.stringify({
+                "status": 1,
+                "message": "Add product variation successfully."
+            }));
+        } else {
+            res.status(401).send(JSON.stringify({
+                "status": 0,
+                "message": "Authentication denied! Only owner of product can do this action."
+            }));
+        }
+    } catch (err) {
+        console.error("Error while adding product variation. ",  err.message);
+        res.type('json');
+        res.status(500).send(JSON.stringify({
+            "status": 0,
+            "message": "Add product variation failed."
+        }));
+        next(err);
+    }
+}
+
 // [PATCH]
 
 
@@ -120,5 +147,6 @@ module.exports = {
     // [POST]
     addNew,
     addCategoryTypeForProduct,
-    addProductImage
+    addProductImage,
+    addProductVariation
 }

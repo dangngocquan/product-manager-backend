@@ -11,6 +11,7 @@ router.get('/categoryId/:categoryId', controller.getProductsByCategoryId)
 router.post('/', controller.addNew);
 router.post('/category-type', controller.addCategoryTypeForProduct);
 router.post('/images', controller.addProductImage);
+router.post('/variations', controller.addProductVariation);
 
 
 

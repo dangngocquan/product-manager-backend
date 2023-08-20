@@ -58,6 +58,13 @@ async function addProductImage(productId, image) {
     await db.query(sql);
 }
 
+async function addProductVariation(productId, attributes = {}, price) {
+    var sql = 
+        `INSERT INTO product_variations (product_id, attributes, price) ` + 
+        `VALUES (${productId}, \'${JSON.stringify(attributes)}\', ${price})`;
+    await db.query(sql);
+}
+
 
 // [PATCH]
 
@@ -75,6 +82,7 @@ module.exports = {
     // [POST]
     addNewProduct,
     addCategoryTypeForProduct,
-    addProductImage
+    addProductImage,
+    addProductVariation
 }
 
