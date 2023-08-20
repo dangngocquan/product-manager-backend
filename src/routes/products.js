@@ -10,6 +10,7 @@ router.get('/categoryId/:categoryId', controller.getProductsByCategoryId)
 // [POST]
 router.post('/', controller.addNew);
 router.post('/category-type', controller.addCategoryTypeForProduct);
+router.post('/images', controller.addProductImage);
 
 
 

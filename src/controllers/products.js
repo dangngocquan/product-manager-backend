@@ -80,6 +80,33 @@ async function addCategoryTypeForProduct(req, res, next) {
 }
 
 
+async function addProductImage(req, res, next) {
+    try {
+        res.type('json');
+        if (await role.isOwnerProduct(req.body.token, req.body.product_id)) {
+            await service.addProductImage(req.body.product_id, req.body.image);
+            res.status(200).send(JSON.stringify({
+                "status": 1,
+                "message": "Add product image successfully."
+            }));
+        } else {
+            res.status(401).send(JSON.stringify({
+                "status": 0,
+                "message": "Authentication denied! Only owner of product can do this action."
+            }));
+        }
+    } catch (err) {
+        console.error("Error while adding category type for product. ",  err.message);
+        res.type('json');
+        res.status(500).send(JSON.stringify({
+            "status": 0,
+            "message": "Add product image failed."
+        }));
+        next(err);
+    }
+}
+
+
 // [PATCH]
 
 
@@ -92,5 +119,6 @@ module.exports = {
     getProductsByCategoryId,
     // [POST]
     addNew,
-    addCategoryTypeForProduct
+    addCategoryTypeForProduct,
+    addProductImage
 }

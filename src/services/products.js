@@ -51,6 +51,14 @@ async function addCategoryTypeForProduct(productId, categoryId) {
 }
 
 
+async function addProductImage(productId, image) {
+    var sql = 
+        `INSERT INTO product_images (product_id, image) ` + 
+        `VALUES (${productId}, \'${image}\')`;
+    await db.query(sql);
+}
+
+
 // [PATCH]
 
 
@@ -66,6 +74,7 @@ module.exports = {
     getProductsById,
     // [POST]
     addNewProduct,
-    addCategoryTypeForProduct
+    addCategoryTypeForProduct,
+    addProductImage
 }
 
