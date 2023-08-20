@@ -13,7 +13,7 @@ async function getInformationShop(id) {
     const informations = await db.query(sql);
 
     return {
-        informations
+        informations: informations
     }
 }
 

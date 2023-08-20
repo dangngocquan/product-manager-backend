@@ -7,9 +7,18 @@ async function isAdmin(token) {
 }
 
 async function isOwnerShop(token, shopId) {
-    const decoded = await auth.authenticateToken(token);
-    const [informationShop, ] = (await serviceShops.getInformationShop(shopId)).informations;
-    return (decoded && decoded.id == informationShop.owner_id);
+    try {
+        const decoded = await auth.authenticateToken(token);
+        const informations = (await serviceShops.getInformationShop(shopId)).informations;
+        if (informations.length > 0) {
+            return (decoded && decoded.id == informations[0].owner_id);
+        } else {
+            return false;
+        }
+    } catch (err) {
+        console.log("Error while checking owner of shop " + err.message);
+        return false;
+    }
     
 }
 
