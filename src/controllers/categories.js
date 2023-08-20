@@ -1,5 +1,6 @@
 const serviceCategories = require('../services/categories');
-
+const auth = require('../services/auth');
+const role = require('../services/role');
 
 
 
@@ -112,12 +113,19 @@ async function getTree(req, res, next) {
 // [POST]
 async function createNew(req, res, next) {
     try {
-        await serviceCategories.createNewCategory(req.body);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 1,
-            "message": "Insert new categories successfully."
-        }));
+        if (await role.isAdmin(req.body.token)) {
+            await serviceCategories.createNewCategory(req.body.data);
+            res.send(JSON.stringify({
+                "status": 1,
+                "message": "Insert new categories successfully."
+            }));
+        } else {
+            res.send(JSON.stringify({
+                "status": 0,
+                "message": "Authentication denied! Only admin can do this action."
+            }));
+        }
     } catch (err) {
         console.error("Error while inserting new categories. ",  err.message);
         res.type('json');
@@ -135,12 +143,19 @@ async function createNew(req, res, next) {
 // [PATCH]
 async function updateById(req, res, next) {
     try {
-        await serviceCategories.updateCategoryById(req.params.id, req.body);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 1,
-            "message": "Update categories successfully."
-        }));
+        if (await role.isAdmin(req.body.token)) {
+            await serviceCategories.updateCategoryById(req.body.id, req.body.newData);
+            res.send(JSON.stringify({
+                "status": 1,
+                "message": "Update categories successfully."
+            }));
+        } else {
+            res.send(JSON.stringify({
+                "status": 0,
+                "message": "Authentication denied! Only admin can do this action."
+            }));
+        }
     } catch (err) {
         console.error("Error while updating new categories. ",  err.message);
         res.type('json');
@@ -159,12 +174,19 @@ async function updateById(req, res, next) {
 // [DELETE]
 async function deleteById(req, res, next) {
     try {
-        await serviceCategories.deleteCategoryById(req.params.id);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 1,
-            "message": "Delete category successfully."
-        }));
+        if (await role.isAdmin(req.body.token)) {
+            await serviceCategories.deleteCategoryById(req.body.id);
+            res.send(JSON.stringify({
+                "status": 1,
+                "message": "Delete category successfully."
+            }));
+        } else {
+            res.send(JSON.stringify({
+                "status": 0,
+                "message": "Authentication denied! Only admin can do this action."
+            }));
+        }
     } catch (err) {
         console.error("Error while deleting category. ",  err.message);
         res.type('json');

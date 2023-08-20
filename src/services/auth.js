@@ -7,7 +7,7 @@ async function generateAccessToken(payload) {
         payload, 
         process.env.TOKEN_SECRET, 
         {
-            expiresIn: '6'
+            expiresIn: '6h'
         }
     );
 }
@@ -24,3 +24,4 @@ module.exports = {
     generateAccessToken,
     authenticateToken
 };
+

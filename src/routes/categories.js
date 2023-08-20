@@ -19,12 +19,12 @@ router.post('/', controllerCategories.createNew);
 
 
 // [PATCH]
-router.patch('/id/:id', controllerCategories.updateById);
+router.patch('/', controllerCategories.updateById);
 
 
 
 // [DELETE]
-router.delete('/id/:id', controllerCategories.deleteById);
+router.delete('/', controllerCategories.deleteById);
 
 
 
