@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -14,6 +16,8 @@ app.use(cors({
         'http://127.0.0.1:5500'
     ]
 }))
+
+dotenv.config();
 
 
 const routerCategories = require('./routes/categories');
