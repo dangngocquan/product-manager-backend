@@ -22,6 +22,7 @@ dotenv.config();
 
 const routerCategories = require('./routes/categories');
 const routerAccounts = require('./routes/accounts');
+const routerShops = require('./routes/shops');
 
 
 app.get('/', (req, res) => {
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 
 app.use('/categories', routerCategories);
 app.use('/accounts', routerAccounts);
+app.use('/shops', routerShops);
 
 
 app.listen(port, () => {
