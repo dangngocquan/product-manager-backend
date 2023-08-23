@@ -4,21 +4,6 @@ const helper = require('../utils/helper');
 
 // [GET]
 
-// async function getCategoriesByPage(page = 1) {
-//     const limit = general.listPerPage;
-//     const offset = helper.getOffset(page, general.listPerPage);
-//     const sql = 
-//         `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
-//         `FROM categories ` + 
-//         `WHERE status = \'normal\' ` + 
-//         `LIMIT ${limit} OFFSET ${offset}`;
-//     const rows = await db.query(sql);
-
-//     return {
-//         categories: rows
-//     }
-// }
-
 async function getCategoryById(id = 1) {
     const sql = 
         `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
@@ -58,7 +43,7 @@ async function getCategoriesByLevel(level = 1, page = 0) {
     }
 }
 
-async function getChildrenOfCategoryById(id = 1, page = 0) {
+async function getChildrenOfCategoryById(id = 0, page = 0) {
     var sql = 
         `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
         `FROM categories ` + 
@@ -110,19 +95,37 @@ async function getCategories(page = 0) {
     }
 }
 
-async function getCategoriesTree() {
+async function getCategoriesTree(rootCategoryId = 0) {
     var categories = (await getCategories()).categories;
+
     var tree = [];
     categories.forEach(function(category) {
-        if (category.level == 1) tree.push(category);
+        if ((rootCategoryId == 0 && category.level == 1) || 
+            (rootCategoryId > 0 && category.id == rootCategoryId)) {
+                tree.push(category);
+        }
         category.children = [];
         categories.forEach(function(child) {
             if (child.parent_category_id == category.id) category.children.push(child);
         })
     })
 
+    var cloneTree = JSON.parse(JSON.stringify(tree));
+    var array =[];
+    cloneTree.forEach((category) => {
+        while (category.children.length > 0) {
+            var children = category.children;
+            delete category.children;
+            array.push(category);
+            category = children;
+        }
+    })
+
+
+
     return {
-        categories: tree
+        categoriesTree: tree,
+        categoriesArray: array
     }
 }
 

@@ -1,8 +1,14 @@
 const db = require('./db');
 const role = require('./role');
+const general = require('../configs/general');
+const helper = require('../utils/helper');
+const serviceCategories = require('./categories');
 
 // [GET]
-async function getProductsByCategoryId(categoryId) {
+async function getProductsByCategoryId(categoryId, page = 0) {
+    // const categories = (await serviceCategories.getChildrenOfCategoryById(categoryId)).categories;
+
+
     var sql = 
         `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description ` + 
         `FROM products ` + 
@@ -10,10 +16,25 @@ async function getProductsByCategoryId(categoryId) {
             `SELECT product_id FROM products_of_categories ` + 
             `WHERE category_id = ${categoryId}` + 
         `)`;
-
+    if (page > 0) {
+        const limit = general.listPerPage;
+        const offset = helper.getOffset(page, general.listPerPage);
+        sql += `LIMIT ${limit} OFFSET ${offset}`
+    }
     var products = await db.query(sql);
 
+    var sqlCountPages = 
+        `SELECT COUNT(*) ` + 
+        `FROM products ` + 
+        `WHERE status = \'normal\' AND id IN (` + 
+            `SELECT product_id FROM products_of_categories ` + 
+            `WHERE category_id = ${categoryId}` + 
+        `)`;
+    const countPages = Math.ceil(
+        (await db.query(sqlCountPages))[0].count / general.listPerPage);
+
     return {
+        countPages: countPages,
         products: products
     }
 }
