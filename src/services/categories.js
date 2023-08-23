@@ -110,15 +110,18 @@ async function getCategoriesTree(rootCategoryId = 0) {
         })
     })
 
-    var cloneTree = JSON.parse(JSON.stringify(tree));
-    var array =[];
-    cloneTree.forEach((category) => {
-        while (category.children.length > 0) {
-            var children = category.children;
-            delete category.children;
+    var cloneTree = JSON.parse(JSON.stringify(tree))
+    var array = [];
+    while (cloneTree.length > 0) {
+        var arr = [];
+        cloneTree.forEach((category) => {
             array.push(category);
-            category = children;
-        }
+            arr = [...arr, ...category.children];
+        })
+        cloneTree = JSON.parse(JSON.stringify(arr));
+    }
+    array.forEach((category) => {
+        delete category.children;
     })
 
 

@@ -67,7 +67,7 @@ async function getChildren(req, res, next) {
 
 async function getTree(req, res, next) {
     try {
-        var categories = await serviceCategories.getCategoriesTree();
+        var categories = await serviceCategories.getCategoriesTree(req.params.rootCategoryId);
         res.type('json');
         res.send(JSON.stringify({
             "status": 1,
