@@ -5,17 +5,18 @@ const helper = require('../utils/helper');
 const serviceCategories = require('./categories');
 
 // [GET]
-async function getProductsByCategoryId(categoryId, page = 0) {
-    // const categories = (await serviceCategories.getChildrenOfCategoryById(categoryId)).categories;
-
+async function getProductsByCategoryId(categoryId = 0, page = 0) {
+    const categories = (await serviceCategories.getCategoriesTree(categoryId)).categoriesArray;
+    const categoryIds = categories.map((category) => category.id);
+    var categoryIdsSQL = '(' + categoryIds.join(', ') + ')';
 
     var sql = 
         `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description ` + 
         `FROM products ` + 
         `WHERE status = \'normal\' AND id IN (` + 
             `SELECT product_id FROM products_of_categories ` + 
-            `WHERE category_id = ${categoryId}` + 
-        `)`;
+            `WHERE category_id IN ${categoryIdsSQL} ` + 
+        `) `;
     if (page > 0) {
         const limit = general.listPerPage;
         const offset = helper.getOffset(page, general.listPerPage);
@@ -28,8 +29,8 @@ async function getProductsByCategoryId(categoryId, page = 0) {
         `FROM products ` + 
         `WHERE status = \'normal\' AND id IN (` + 
             `SELECT product_id FROM products_of_categories ` + 
-            `WHERE category_id = ${categoryId}` + 
-        `)`;
+            `WHERE category_id IN ${categoryIdsSQL} ` + 
+        `) `;
     const countPages = Math.ceil(
         (await db.query(sqlCountPages))[0].count / general.listPerPage);
 
