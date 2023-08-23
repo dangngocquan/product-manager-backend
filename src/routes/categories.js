@@ -5,10 +5,9 @@ const controllerCategories = require('../controllers/categories');
 
 
 // [GET]
-router.get('/page/:page', controllerCategories.getByPage);
 router.get('/id/:id', controllerCategories.getById);
-router.get('/level/:level', controllerCategories.getByLevel);
-router.get('/id/:id/children', controllerCategories.getChildren);
+router.get('/level/:level/page/:page', controllerCategories.getByLevel);
+router.get('/id/:id/children/page/:page', controllerCategories.getChildren);
 router.get('/tree', controllerCategories.getTree);
 
 

@@ -5,27 +5,6 @@ const role = require('../services/role');
 
 
 // [GET]
-
-async function getByPage(req, res, next) {
-    try {
-        var categories = await serviceCategories.getCategoriesByPage(req.params.page);
-        res.type('json');
-        res.send(JSON.stringify({
-            "status": 1,
-            "message": `Get categories page ${req.params.page} successfully.`,
-            "categories": categories
-        }));
-    } catch (err) {
-        console.error("Error while getting categories. ",  err.message);
-        res.type('json');
-        res.send(JSON.stringify({
-            "status": 0,
-            "message": `Get categories page ${req.params.page} failed.`
-        }));
-        next(err);
-    }
-}
-
 async function getById(req, res, next) {
     try {
         var categories = await serviceCategories.getCategoryById(req.params.id);
@@ -48,9 +27,9 @@ async function getById(req, res, next) {
 
 async function getByLevel(req, res, next) {
     try {
-        var categories = await serviceCategories.getCategoriesByLevel(req.params.level);
+        var categories = await serviceCategories.getCategoriesByLevel(req.params.level, req.params.page);
         res.type('json');
-        res.send(JSON.stringify({
+        res.status(200).send(JSON.stringify({
             "status": 1,
             "message": `Get category level ${req.params.level} successfully.`,
             "categories": categories
@@ -58,7 +37,7 @@ async function getByLevel(req, res, next) {
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
         res.type('json');
-        res.send(JSON.stringify({
+        res.status(501).send(JSON.stringify({
             "status": 0,
             "message": `Get category level ${req.params.level} failed.`
         }));
@@ -68,9 +47,9 @@ async function getByLevel(req, res, next) {
 
 async function getChildren(req, res, next) {
     try {
-        var categories = await serviceCategories.getChildrenOfCategoryById(req.params.id);
+        var categories = await serviceCategories.getChildrenOfCategoryById(req.params.id, req.params.page);
         res.type('json');
-        res.send(JSON.stringify({
+        res.status(200).send(JSON.stringify({
             "status": 1,
             "message": `Get children of category has id ${req.params.id} successfully.`,
             "children": categories
@@ -78,7 +57,7 @@ async function getChildren(req, res, next) {
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
         res.type('json');
-        res.send(JSON.stringify({
+        res.status(500).send(JSON.stringify({
             "status": 0,
             "message": `Get children of category has id ${req.params.id} failed.`
         }));
@@ -201,7 +180,6 @@ async function deleteById(req, res, next) {
 
 module.exports = {
     // [GET]
-    getByPage: getByPage,
     getById: getById,
     getByLevel: getByLevel,
     getChildren: getChildren,

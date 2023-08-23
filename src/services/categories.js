@@ -4,20 +4,20 @@ const helper = require('../utils/helper');
 
 // [GET]
 
-async function getCategoriesByPage(page = 1) {
-    const limit = general.listPerPage;
-    const offset = helper.getOffset(page, general.listPerPage);
-    const sql = 
-        `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
-        `FROM categories ` + 
-        `WHERE status = \'normal\' ` + 
-        `LIMIT ${limit} OFFSET ${offset}`;
-    const rows = await db.query(sql);
+// async function getCategoriesByPage(page = 1) {
+//     const limit = general.listPerPage;
+//     const offset = helper.getOffset(page, general.listPerPage);
+//     const sql = 
+//         `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
+//         `FROM categories ` + 
+//         `WHERE status = \'normal\' ` + 
+//         `LIMIT ${limit} OFFSET ${offset}`;
+//     const rows = await db.query(sql);
 
-    return {
-        categories: rows
-    }
-}
+//     return {
+//         categories: rows
+//     }
+// }
 
 async function getCategoryById(id = 1) {
     const sql = 
@@ -31,38 +31,81 @@ async function getCategoryById(id = 1) {
     }
 }
 
-async function getCategoriesByLevel(level = 1) {
-    const sql = 
+async function getCategoriesByLevel(level = 1, page = 0) {
+    
+
+    var sql = 
         `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
         `FROM categories ` + 
-        `WHERE status = \'normal\' AND level = ${level}`;
+        `WHERE status = \'normal\' AND level = ${level} `;
+    if (page > 0) {
+        const limit = general.listPerPage;
+        const offset = helper.getOffset(page, general.listPerPage);
+        sql += `LIMIT ${limit} OFFSET ${offset}`
+    }
+        
     const rows = await db.query(sql);
 
+    var sqlCountPages = 
+        `SELECT COUNT(*) FROM categories ` + 
+        `WHERE status = \'normal\' AND level = ${level}`;
+    const countPages = Math.ceil(
+        (await db.query(sqlCountPages))[0].count / general.listPerPage);
+
     return {
+        countPages: countPages,
         categories: rows
     }
 }
 
-async function getChildrenOfCategoryById(id = 1) {
-    const sql = 
+async function getChildrenOfCategoryById(id = 1, page = 0) {
+    var sql = 
         `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
+        `FROM categories ` + 
+        `WHERE status = \'normal\' AND parent_category_id = ${id} `;
+
+    if (page > 0) {
+        const limit = general.listPerPage;
+        const offset = helper.getOffset(page, general.listPerPage);
+        sql += `LIMIT ${limit} OFFSET ${offset}`
+    } 
+
+    const rows = await db.query(sql);
+
+    var sqlCountPages = 
+        `SELECT COUNT(*) ` + 
         `FROM categories ` + 
         `WHERE status = \'normal\' AND parent_category_id = ${id}`;
-    const rows = await db.query(sql);
+    const countPages = Math.ceil(
+        (await db.query(sqlCountPages))[0].count / general.listPerPage);
 
     return {
+        countPages: countPages,
         categories: rows
     }
 }
 
-async function getCategories() {
-    const sql = 
+async function getCategories(page = 0) {
+    var sql = 
         `SELECT id, name, image, level, parent_category_id, EXTRACT(EPOCH FROM time_added) AS time_added, status ` + 
         `FROM categories ` + 
-        `WHERE status = \'normal\'`;
+        `WHERE status = \'normal\' `;
+    if (page > 0) {
+        const limit = general.listPerPage;
+        const offset = helper.getOffset(page, general.listPerPage);
+        sql += `LIMIT ${limit} OFFSET ${offset}`
+    } 
     const rows = await db.query(sql);
 
+    var sqlCountPages = 
+        `SELECT COUNT(*) ` + 
+        `FROM categories ` + 
+        `WHERE status = \'normal\' `;
+    const countPages = Math.ceil(
+        (await db.query(sqlCountPages))[0].count / general.listPerPage);
+
     return {
+        countPages: countPages,
         categories: rows
     }
 }
@@ -135,7 +178,6 @@ async function deleteCategoryById(id = 0) {
 
 module.exports = {
     // [GET]
-    getCategoriesByPage: getCategoriesByPage,
     getCategoryById: getCategoryById,
     getCategoriesByLevel: getCategoriesByLevel,
     getChildrenOfCategoryById: getChildrenOfCategoryById,
