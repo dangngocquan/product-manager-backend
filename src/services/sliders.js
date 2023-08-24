@@ -14,7 +14,7 @@ async function getSliders() {
 // [POST]
 async function addSlider(image) {
     var sql =   
-        `INSERT INTO sliders (image) VALUES (${image})`;
+        `INSERT INTO sliders (image) VALUES (\'${image}\')`;
    
     await db.query(sql);
 }
