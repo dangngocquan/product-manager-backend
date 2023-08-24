@@ -1,5 +1,6 @@
 const general = {
-    listPerPage: 15
+    listPerPage: 15,
+    limitLastest: 7
 };
 
 module.exports = general;

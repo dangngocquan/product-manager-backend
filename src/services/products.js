@@ -54,6 +54,34 @@ async function getProductsById(id) {
 }
 
 
+async function getLastestProductsByCategoryId(categoryId = 0) {
+    const categories = (await serviceCategories.getCategoriesTree(categoryId)).categoriesArray;
+    const categoryIds = categories.map((category) => category.id);
+    var categoryIdsSQL = '(' + categoryIds.join(', ') + ')';
+
+    var sql = 
+        `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description ` + 
+        `FROM products ` + 
+        `WHERE status = \'normal\' AND id IN (` + 
+            `SELECT product_id FROM products_of_categories ` + 
+            `WHERE category_id IN ${categoryIdsSQL} ` + 
+        `) ` + 
+        `ORDER BY time_added DESC `;
+
+    const limit = general.limitLastest;
+    const offset = helper.getOffset(1, general.limitLastest);
+    sql += `LIMIT ${limit} OFFSET ${offset}`;
+
+    var products = await db.query(sql);
+
+    return {
+        products: products
+    }
+}
+
+
+
+
 
 // [POST]
 async function addNewProduct(formData = {}) {
@@ -101,6 +129,7 @@ module.exports = {
     // [GET]
     getProductsByCategoryId,
     getProductsById,
+    getLastestProductsByCategoryId,
     // [POST]
     addNewProduct,
     addCategoryTypeForProduct,
