@@ -37,22 +37,20 @@ async function loginAccount(req, res, next) {
             await serviceHistoryLogins.insertHistory(account.id);
 
             // Return response to client
-            res.send(JSON.stringify({
-                "status": 1,
+            res.status(200).send(JSON.stringify({
                 "message": "Login account successful.",
                 "token": token
             }));
         } else {
-            res.send(JSON.stringify({
-                "status": 0,
+            res.status(200).send(JSON.stringify({
                 "message": "Username or password incorrect.",
+                "token": null
             }));
         }
     } catch (err) {
         console.error("Error while login account. ",  err.message);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 0,
+        res.status(500).send(JSON.stringify({
             "message": "Login account failed."
         }));
         next(err);
