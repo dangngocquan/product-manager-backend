@@ -5,13 +5,13 @@ const controller = require('../controllers/accounts');
 
 // [GET]
 router.get('/check-username', controller.checkExistUsername);
-router.get('/informations', controller.getInformationsByToken);
 
 
 
 // [POST]
 router.post('/', controller.createNew);
 router.post('/login', controller.loginAccount);
+router.post('/informations', controller.getInformationsByToken);
 
 
 
