@@ -61,25 +61,35 @@ async function loginAccount(req, res, next) {
 // [POST]
 async function createNew(req, res, next) {
     try {
-        var ids = (await service.getIdByUsername(req.body.username)).ids;
-        if (ids.length > 0) {
+        if (req.body.username === undefined || 
+            req.body.password === undefined || 
+            req.body.nickname === undefined
+            ) {
             res.type('json');
-            res.status(409).send(JSON.stringify({
-                "message": "Username already exists."
+            res.status(400).send(JSON.stringify({
+                "message": "Request can't be processed."
             }));
         } else {
-            const result = await service.createNewAccount(req.body);
-            if (result) {
+            var ids = (await service.getIdByUsername(req.body.username)).ids;
+            if (ids.length > 0) {
                 res.type('json');
-                res.status(201).send(JSON.stringify({
-                    "message": "Create new account successfully."
+                res.status(409).send(JSON.stringify({
+                    "message": "Username already exists."
                 }));
             } else {
-                res.type('json');
-                res.status(500).send(JSON.stringify({
-                    "message": "Create new account failed."
-                }));
-            }  
+                const result = await service.createNewAccount(req.body);
+                if (result) {
+                    res.type('json');
+                    res.status(201).send(JSON.stringify({
+                        "message": "Create new account successfully."
+                    }));
+                } else {
+                    res.type('json');
+                    res.status(500).send(JSON.stringify({
+                        "message": "Create new account failed."
+                    }));
+                }  
+            }
         }
     } catch (err) {
         console.error("Error while creating new account. ",  err.message);
