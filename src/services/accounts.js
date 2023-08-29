@@ -44,10 +44,11 @@ async function createNewAccount(formData = {}) {
         `INSERT INTO clients (account_id, nickname) ` + 
         `VALUES (` +
             `(SELECT id FROM new_account), ` + 
-            `\'${formData.nickname}\', ` + 
+            `\'${formData.nickname}\' ` + 
         `)`;
     
-    await db.query(sql);
+    const res = await db.query(sql);
+    return res;
 }
 
 

@@ -68,16 +68,23 @@ async function createNew(req, res, next) {
                 "message": "Username already exists."
             }));
         } else {
-            await service.createNewAccount(req.body);
-            res.type('json');
-            res.status(201).send(JSON.stringify({
-                "message": "Create new account successfully."
-            }));
+            const result = await service.createNewAccount(req.body);
+            if (result) {
+                res.type('json');
+                res.status(201).send(JSON.stringify({
+                    "message": "Create new account successfully."
+                }));
+            } else {
+                res.type('json');
+                res.status(500).send(JSON.stringify({
+                    "message": "Create new account failed."
+                }));
+            }  
         }
     } catch (err) {
         console.error("Error while creating new account. ",  err.message);
         res.type('json');
-        res.status(503).send(JSON.stringify({
+        res.status(500).send(JSON.stringify({
             "message": "Create new account failed."
         }));
         next(err);
