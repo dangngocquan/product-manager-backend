@@ -58,6 +58,28 @@ async function loginAccount(req, res, next) {
 }
 
 
+
+async function getClientInformationsByToken(req, res, next) {
+    try {
+        const clientInformations = await auth.authenticateToken(req.body.token);
+        res.type('json');
+        res.status(200).send(JSON.stringify({
+            "message": "Get client informations successful.",
+            "informations": clientInformations
+        }));
+    } catch (err) {
+        console.error("Error while get client informations. ",  err.message);
+        res.type('json');
+        res.status(500).send(JSON.stringify({
+            "message": "Get client informations failed."
+        }));
+        next(err);
+    }
+}
+
+
+
+
 // [POST]
 async function createNew(req, res, next) {
     try {
@@ -118,6 +140,7 @@ module.exports = {
     // [GET]
     checkExistUsername,
     loginAccount,
+    getClientInformationsByToken,
     // [POST]
     createNew,
 }
