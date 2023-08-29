@@ -61,17 +61,23 @@ async function loginAccount(req, res, next) {
 // [POST]
 async function createNew(req, res, next) {
     try {
-        await service.createNewAccount(req.body);
-        res.type('json');
-        res.send(JSON.stringify({
-            "status": 1,
-            "message": "Create new account successfully."
-        }));
+        var ids = (await service.getIdByUsername(req.body.username)).ids;
+        if (ids.length > 0) {
+            res.type('json');
+            res.status(409).send(JSON.stringify({
+                "message": "Username already exists."
+            }));
+        } else {
+            await service.createNewAccount(req.body);
+            res.type('json');
+            res.status(201).send(JSON.stringify({
+                "message": "Create new account successfully."
+            }));
+        }
     } catch (err) {
         console.error("Error while creating new account. ",  err.message);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 0,
+        res.status(503).send(JSON.stringify({
             "message": "Create new account failed."
         }));
         next(err);
