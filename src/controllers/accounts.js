@@ -59,7 +59,7 @@ async function loginAccount(req, res, next) {
 
 
 
-async function getClientInformationsByToken(req, res, next) {
+async function getInformationsByToken(req, res, next) {
     try {
         const clientInformations = await auth.authenticateToken(req.body.token);
         res.type('json');
@@ -140,7 +140,7 @@ module.exports = {
     // [GET]
     checkExistUsername,
     loginAccount,
-    getClientInformationsByToken,
+    getInformationsByToken,
     // [POST]
     createNew,
 }

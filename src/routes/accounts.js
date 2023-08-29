@@ -5,6 +5,7 @@ const controller = require('../controllers/accounts');
 
 // [GET]
 router.get('/check-username', controller.checkExistUsername);
+router.get('/informations', controller.getInformationsByToken);
 
 
 
