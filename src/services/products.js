@@ -160,6 +160,7 @@ module.exports = {
     getProductsByCategoryId,
     getProductsById,
     getLastestProductsByCategoryId,
+    getProductInformationsById,
     // [POST]
     addNewProduct,
     addCategoryTypeForProduct,
