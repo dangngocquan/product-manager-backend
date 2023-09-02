@@ -66,12 +66,10 @@ async function addNew(req, res, next) {
         if (await role.isOwnerShop(req.body.token, req.body.data.shop_id)) {
             await service.addNewProduct(req.body.data);
             res.status(200).send(JSON.stringify({
-                "status": 1,
                 "message": "Add new product successfully."
             }));
         } else {
             res.status(401).send(JSON.stringify({
-                "status": 0,
                 "message": "Authentication denied! Only owner of shop can do this action."
             }));
         }
@@ -79,7 +77,6 @@ async function addNew(req, res, next) {
         console.error("Error while adding new product. ",  err.message);
         res.type('json');
         res.status(500).send(JSON.stringify({
-            "status": 0,
             "message": "Add new product failed."
         }));
         next(err);
@@ -94,12 +91,10 @@ async function addCategoryTypeForProduct(req, res, next) {
         if (await role.isOwnerProduct(req.body.token, req.body.product_id)) {
             await service.addCategoryTypeForProduct(req.body.product_id, req.body.category_id);
             res.status(200).send(JSON.stringify({
-                "status": 1,
                 "message": "Add category type for product successfully."
             }));
         } else {
             res.status(401).send(JSON.stringify({
-                "status": 0,
                 "message": "Authentication denied! Only owner of product can do this action."
             }));
         }
@@ -107,7 +102,6 @@ async function addCategoryTypeForProduct(req, res, next) {
         console.error("Error while adding category type for product. ",  err.message);
         res.type('json');
         res.status(500).send(JSON.stringify({
-            "status": 0,
             "message": "Add category type for product failed."
         }));
         next(err);
@@ -121,12 +115,10 @@ async function addProductImage(req, res, next) {
         if (await role.isOwnerProduct(req.body.token, req.body.product_id)) {
             await service.addProductImage(req.body.product_id, req.body.image);
             res.status(200).send(JSON.stringify({
-                "status": 1,
                 "message": "Add product image successfully."
             }));
         } else {
             res.status(401).send(JSON.stringify({
-                "status": 0,
                 "message": "Authentication denied! Only owner of product can do this action."
             }));
         }
@@ -134,7 +126,6 @@ async function addProductImage(req, res, next) {
         console.error("Error while adding category type for product. ",  err.message);
         res.type('json');
         res.status(500).send(JSON.stringify({
-            "status": 0,
             "message": "Add product image failed."
         }));
         next(err);
@@ -149,12 +140,10 @@ async function addProductVariation(req, res, next) {
         if (await role.isOwnerProduct(req.body.token, req.body.product_id)) {
             await service.addProductVariation(req.body.product_id, req.body.attributes, req.body.price);
             res.status(200).send(JSON.stringify({
-                "status": 1,
                 "message": "Add product variation successfully."
             }));
         } else {
             res.status(401).send(JSON.stringify({
-                "status": 0,
                 "message": "Authentication denied! Only owner of product can do this action."
             }));
         }
@@ -162,7 +151,6 @@ async function addProductVariation(req, res, next) {
         console.error("Error while adding product variation. ",  err.message);
         res.type('json');
         res.status(500).send(JSON.stringify({
-            "status": 0,
             "message": "Add product variation failed."
         }));
         next(err);

@@ -65,14 +65,14 @@ async function getProductInformationsById(id) {
     var sql1 = 
         `SELECT id, product_id, image ` + 
         `FROM product_images ` + 
-        `WHERE id = ${id}`;
+        `WHERE product_id = ${id}`;
 
     var productImages = await db.query(sql1);
 
     var sql2 = 
         `SELECT id, product_id, attributes, price ` + 
         `FROM product_variations ` + 
-        `WHERE status = \'normal\' AND id = ${id}`;
+        `WHERE status = \'normal\' AND product_id = ${id}`;
 
     var productVariations = await db.query(sql2);
 
