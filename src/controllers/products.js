@@ -44,6 +44,27 @@ async function getLastestProductsByCategoryId(req, res, next) {
 }
 
 
+async function getProductInformationsById(req, res, next) {
+    try {
+        var products = await service.getLastestProductsByCategoryId(req.params.id);
+        res.type('json');
+        res.status(200).send(JSON.stringify({
+            "status": 1,
+            "message": "Get products successfully.",
+            "products": products
+        }));  
+    } catch (err) {
+        console.error("Error while getting products. ",  err.message);
+        res.status(500).type('json');
+        res.send(JSON.stringify({
+            "status": 0,
+            "message": "Get products failed."
+        }));
+        next(err);
+    }
+}
+
+
 // [POST]
 async function addNew(req, res, next) {
     try {
@@ -165,6 +186,7 @@ module.exports = {
     // [GET]
     getProductsByCategoryId,
     getLastestProductsByCategoryId,
+    getProductInformationsById,
     // [POST]
     addNew,
     addCategoryTypeForProduct,

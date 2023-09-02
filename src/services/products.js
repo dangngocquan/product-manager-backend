@@ -53,6 +53,36 @@ async function getProductsById(id) {
     }
 }
 
+async function getProductInformationsById(id) {
+    var sql = 
+        `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description ` + 
+        `FROM products ` + 
+        `WHERE status = \'normal\' AND id = ${id}`;
+
+    var products = await db.query(sql);
+
+
+    var sql1 = 
+        `SELECT id, product_id, image ` + 
+        `FROM product_images ` + 
+        `WHERE id = ${id}`;
+
+    var productImages = await db.query(sql1);
+
+    var sql2 = 
+        `SELECT id, product_id, attributes, price ` + 
+        `FROM product_variations ` + 
+        `WHERE status = \'normal\' AND id = ${id}`;
+
+    var productVariations = await db.query(sql2);
+
+    return {
+        products: products,
+        productsImages: productImages,
+        productVariations: productVariations
+    }
+}
+
 
 async function getLastestProductsByCategoryId(categoryId = 0) {
     const categories = (await serviceCategories.getCategoriesTree(categoryId)).categoriesArray;
@@ -60,7 +90,7 @@ async function getLastestProductsByCategoryId(categoryId = 0) {
     var categoryIdsSQL = '(' + categoryIds.join(', ') + ')';
 
     var sql = 
-        `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description ` + 
+        `SELECT id, shop_id, name, image, price, currency, stock, EXTRACT(EPOCH FROM time_added) AS time_added, description, sold ` + 
         `FROM products ` + 
         `WHERE status = \'normal\' AND id IN (` + 
             `SELECT product_id FROM products_of_categories ` + 
