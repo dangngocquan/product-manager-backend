@@ -70,9 +70,16 @@ async function getProductInformationsById(id) {
     var productImages = await db.query(sql1);
 
     var sql2 = 
-        `SELECT id, product_id, attributes, price ` + 
-        `FROM product_variations ` + 
-        `WHERE status = \'normal\' AND product_id = ${id}`;
+        `select pv.id as id,
+            pv.price as price,
+            array_agg(vv.id) as variant_value_ids,
+            array_agg(vv.value) as variant_value_names,
+            array_agg(v.id) as variant_ids,
+            array_agg(v.variant_name) as variant_names from (
+                (
+                    product_variants as pv join product_variant_details as pvd on pv.id = pvd.product_variant_id
+                ) join variant_values as vv on pvd.variant_value_id = vv.id
+            ) join variants as v on vv.variant_id = v.id where product_id = ${id} group by pv.id`;
 
     var productVariations = await db.query(sql2);
 
@@ -139,12 +146,52 @@ async function addProductImage(productId, image) {
 }
 
 async function addProductVariation(productId, attributes = {}, price) {
-    var sql = 
-        `INSERT INTO product_variations (product_id, attributes, price) ` + 
-        `VALUES (${productId}, \'${JSON.stringify(attributes)}\', ${price})`;
-    await db.query(sql);
-}
+    var attributeKeys = [...Object.keys(attributes)];
+    var sql1 =
+        `insert into product_variants (
+            product_id, 
+            price
+        ) values (
+            ${productId}, 
+            ${price}
+        ) returning id`
+    var [id,] = await db.query(sql1);
+    // console.log(id); // { id: '3' }
 
+    for (key of attributeKeys) {
+        var sql = 
+            `with variants_id as (
+                insert into variants (
+                    variant_name
+                ) values (
+                    '${key}'
+                ) on conflict (
+                    variant_name
+                ) do update set variant_name = EXCLUDED.variant_name returning id
+            ),
+            variant_values_id as (
+                insert into variant_values (
+                    variant_id, 
+                    value
+                ) values (
+                    (select id from variants_id),
+                    '${attributes[key]}'
+                ) on conflict (
+                    variant_id, 
+                    value
+                ) do update set variant_id = EXCLUDED.variant_id, 
+                                value = EXCLUDED.value returning id
+            ) insert into product_variant_details (
+                    product_variant_id, 
+                    variant_value_id
+                ) values (
+                    ${id.id},
+                    (select id from variant_values_id)
+                )`;
+
+        await db.query(sql);
+    }
+}
 
 // [PATCH]
 
