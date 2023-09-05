@@ -63,9 +63,7 @@ async function getProductInformationsById(id) {
 
 
     var sql1 = 
-        `SELECT id, product_id, image ` + 
-        `FROM product_images ` + 
-        `WHERE product_id = ${id}`;
+        `SELECT array_agg(image) as images FROM product_images where product_id = ${id} group by product_id `;
 
     var productImages = await db.query(sql1);
 
