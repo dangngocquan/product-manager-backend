@@ -116,8 +116,6 @@ async function getLastestProductsByCategoryId(categoryId = 0) {
 
 
 
-
-
 // [POST]
 async function addNewProduct(formData = {}) {
     var sql = 

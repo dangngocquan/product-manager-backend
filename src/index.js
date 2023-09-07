@@ -29,6 +29,7 @@ const routerAccounts = require('./routes/accounts');
 const routerShops = require('./routes/shops');
 const routerProducts = require('./routes/products');
 const routerSliders = require('./routes/sliders');
+const routerCarts = require('./routes/carts');
 
 
 app.get('/', (req, res) => {
@@ -40,6 +41,7 @@ app.use('/accounts', routerAccounts);
 app.use('/shops', routerShops);
 app.use('/products', routerProducts);
 app.use('/sliders', routerSliders);
+app.use('/carts', routerCarts);
 
 
 app.listen(port, () => {
