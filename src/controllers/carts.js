@@ -24,7 +24,7 @@ async function addProduct(req, res, next) {
             }));
         } else {
             res.status(401).send(JSON.stringify({
-                "message": "Authentication denied! Only owner of shop can do this action."
+                "message": "Authentication denied! Only owner of cart can do this action."
             }));
         }
     } catch (err) {
@@ -32,6 +32,32 @@ async function addProduct(req, res, next) {
         res.type('json');
         res.status(500).send(JSON.stringify({
             "message": "Create new cart failed."
+        }));
+        next(err);
+    }
+} 
+
+
+async function getProducts(req, res, next) {
+    try {
+        res.type('json');
+        const decoded = await auth.authenticateToken(req.body.token);
+        if (decoded) {
+            const products = (await service.getProducts(decoded.cart_id)).products;
+            res.status(201).send(JSON.stringify({
+                "message": "Get products of cart successfully.",
+                "products": products
+            }));
+        } else {
+            res.status(401).send(JSON.stringify({
+                "message": "Authentication denied! Only owner of cart can do this action."
+            }));
+        }
+    } catch (err) {
+        console.error("Error while geting products of cart. ",  err.message);
+        res.type('json');
+        res.status(500).send(JSON.stringify({
+            "message": "Get products of cart failed."
         }));
         next(err);
     }
@@ -49,5 +75,6 @@ async function addProduct(req, res, next) {
 
 module.exports = {
     // [POST]
-    addProduct
+    addProduct,
+    getProducts
 }

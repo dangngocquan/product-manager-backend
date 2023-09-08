@@ -10,6 +10,7 @@ const controller = require('../controllers/carts');
 
 // [POST]
 router.post('/', controller.addProduct);
+router.post('/products', controller.getProducts);
 
 
 
