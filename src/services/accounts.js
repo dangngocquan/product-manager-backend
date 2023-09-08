@@ -14,16 +14,32 @@ async function getIdByUsername(username) {
 
 async function loginAccount(formData) {
     var sql = 
-        `WITH account AS (` + 
-            `SELECT ` + 
-                `id, username, password, status, type, EXTRACT(EPOCH FROM time_registered) AS time_registered ` +
-            `FROM accounts ` + 
-            `WHERE status != 'deleted' AND username = '${formData.username}' AND password = '${formData.password}'` +
-        `) ` +
-        `SELECT ` + 
-            `account.id AS id, username, password, status, type, time_registered, ` +
-            `nickname, email, phone_number, gender, EXTRACT(EPOCH FROM birthday) AS birthday, portrait ` +
-        `FROM account JOIN clients ON account.id = clients.account_id`;
+        `with account as (
+            select id,
+                username, 
+                password, 
+                status, 
+                type, 
+                extract(
+                    epoch from time_registered
+                ) as time_registered from accounts where (
+                    status != 'deleted' AND username = '${formData.username}' AND password = '${formData.password}'
+                )
+        ) select clients.id AS id, 
+            username, 
+            password, 
+            status, 
+            type, 
+            time_registered,
+            nickname, 
+            email, 
+            phone_number, 
+            gender, 
+            extract(epoch from birthday) as birthday, 
+            portrait,
+            carts.id as cart_id from (
+                account join clients on account.id = clients.account_id
+            ) join carts on clients.id = carts.owner_id`;
 
     const accountInformations = await db.query(sql);
     return {
@@ -46,6 +62,28 @@ async function createNewAccount(formData = {}) {
             `(SELECT id FROM new_account), ` + 
             `\'${formData.nickname}\' ` + 
         `)`;
+        `with new_account as (
+            insert into accounts (
+                username, 
+                password
+            ) values (
+                '${formData.username}', 
+                '${formData.password}'
+            ) returning id
+        ), 
+        new_client as (
+            insert into clients (
+                account_id,
+                nickname
+            ) values (
+                (select id from new_account),
+                '${formData.nickname}'
+            ) returning id
+        ) insert into carts (
+            owner_id
+        ) values (
+            (select id from new_client)
+        )`;
     
     const res = await db.query(sql);
     return res;

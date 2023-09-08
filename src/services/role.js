@@ -1,6 +1,7 @@
 const auth = require('./auth');
 const serviceShops = require('./shops');
 const serviceProducts = require('./products');
+const serviceCarts = require('./carts');
 
 async function isAdmin(token) {
     const decoded = await auth.authenticateToken(token);

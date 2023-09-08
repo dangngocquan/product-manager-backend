@@ -30,7 +30,6 @@ async function getByLevel(req, res, next) {
         var categories = await serviceCategories.getCategoriesByLevel(req.params.level, req.params.page);
         res.type('json');
         res.status(200).send(JSON.stringify({
-            "status": 1,
             "message": `Get category level ${req.params.level} successfully.`,
             "categories": categories
         }));
@@ -38,7 +37,6 @@ async function getByLevel(req, res, next) {
         console.error("Error while getting categories. ",  err.message);
         res.type('json');
         res.status(501).send(JSON.stringify({
-            "status": 0,
             "message": `Get category level ${req.params.level} failed.`
         }));
         next(err);
@@ -50,7 +48,6 @@ async function getChildren(req, res, next) {
         var categories = await serviceCategories.getChildrenOfCategoryById(req.params.id, req.params.page);
         res.type('json');
         res.status(200).send(JSON.stringify({
-            "status": 1,
             "message": `Get children of category has id ${req.params.id} successfully.`,
             "children": categories
         }));
@@ -58,7 +55,6 @@ async function getChildren(req, res, next) {
         console.error("Error while getting categories. ",  err.message);
         res.type('json');
         res.status(500).send(JSON.stringify({
-            "status": 0,
             "message": `Get children of category has id ${req.params.id} failed.`
         }));
         next(err);
@@ -69,16 +65,14 @@ async function getTree(req, res, next) {
     try {
         var categories = await serviceCategories.getCategoriesTree(req.params.rootCategoryId);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 1,
+        res.status(200).send(JSON.stringify({
             "message": `Get category tree successfully.`,
             "categories": categories
         }));
     } catch (err) {
         console.error("Error while getting categories. ",  err.message);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 0,
+        res.status(500).send(JSON.stringify({
             "message": `Get category tree failed.`
         }));
         next(err);
@@ -95,21 +89,18 @@ async function createNew(req, res, next) {
         res.type('json');
         if (await role.isAdmin(req.body.token)) {
             await serviceCategories.createNewCategory(req.body.data);
-            res.send(JSON.stringify({
-                "status": 1,
+            res.status(201).send(JSON.stringify({
                 "message": "Insert new categories successfully."
             }));
         } else {
-            res.send(JSON.stringify({
-                "status": 0,
+            res.status(401).send(JSON.stringify({
                 "message": "Authentication denied! Only admin can do this action."
             }));
         }
     } catch (err) {
         console.error("Error while inserting new categories. ",  err.message);
         res.type('json');
-        res.send(JSON.stringify({
-            "status": 0,
+        res.status(500).send(JSON.stringify({
             "message": "Insert new categories failed."
         }));
         next(err);
