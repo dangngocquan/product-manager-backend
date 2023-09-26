@@ -9,85 +9,8 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-const cors = require('cors');
-app.use(cors({
-    origin: [
-        'http://localhost:5500',
-        'http://localhost:3001',
-        'http://localhost:3000',
-        'http://127.0.0.1:5500',
-        'http://127.0.0.1:3001',
-        'http://127.0.0.1:3000'
-    ]
-}))
 
 dotenv.config();
-
-// const serviceAuth = require('./services/auth');
-// serviceAuth.setupAuth(app);
-
-// const session = require('express-session');
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
-// var userProfile;
-// dotenv.config();
-// const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-// const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-
-
-    // app.set('view engine', 'ejs');
-
-    // app.use(
-    //     session({
-    //         resave: false,
-    //         saveUninitialized: true,
-    //         secret: 'SECRET' 
-    //     })
-    // );
-
-    // /*  PASSPORT SETUP  */
-    // app.use(passport.initialize());
-    // app.use(passport.session());
-
-    // app.set('view engine', 'ejs');
-
-    // passport.serializeUser(function(user, cb) {
-    //     cb(null, user);
-    // });
-
-    // passport.deserializeUser(function(obj, cb) {
-    //     cb(null, obj);
-    // });
-
-    // /*  Google AUTH  */
-    // passport.use(
-    //     new GoogleStrategy(
-    //         {
-    //             clientID: GOOGLE_CLIENT_ID,
-    //             clientSecret: GOOGLE_CLIENT_SECRET,
-    //             callbackURL: "http://localhost:3000/auth/google/callback"
-    //         },
-    //         function(accessToken, refreshToken, profile, done) {
-    //             userProfile = profile;
-    //             return done(null, userProfile);
-    //         }
-    //     )
-    // );
-    // app.get(
-    //     '/auth/google/callback', 
-    //     passport.authenticate('google', { failureRedirect: '/error' }),
-    //     function(req, res) {
-    //         // Successful authentication, redirect success.
-    //         res.redirect('/success');
-    //     }
-    // );
-    // app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-    // app.get('/success', (req, res) => res.send(userProfile));
-    // app.get('/error', (req, res) => res.send("Error logging in"));
-
-
-
 
 
 // SESSION
@@ -130,8 +53,8 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://product-manager-orcc.onrender.com/auth/google/callback"
-    // callbackURL: "http://localhost:3000/auth/google/callback"
+    // callbackURL: "https://product-manager-orcc.onrender.com/auth/google/callback"
+    callbackURL: "http://localhost:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
       userProfile=profile;
@@ -149,6 +72,18 @@ app.get('/auth/google/callback',
     res.redirect('/auth/google/success');
   });
 
+
+  const cors = require('cors');
+  app.use(cors({
+      origin: [
+          'http://localhost:5500',
+          'http://localhost:3001',
+          'http://localhost:3000',
+          'http://127.0.0.1:5500',
+          'http://127.0.0.1:3001',
+          'http://127.0.0.1:3000'
+      ]
+  }))
 
 const routerCategories = require('./routes/categories');
 const routerAccounts = require('./routes/accounts');

@@ -33,7 +33,8 @@ async function loginAccount(formData) {
                 type, 
                 extract(
                     epoch from time_registered
-                ) as time_registered from accounts where (
+                ) as time_registered,
+                email from accounts where (
                     status != 'deleted' AND username = '${formData.username}' AND password = '${formData.password}'
                 )
         ) select clients.id AS id, 
