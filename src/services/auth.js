@@ -1,6 +1,8 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 
+
+// Auth
 async function generateAccessToken(payload) {
     dotenv.config();
     return jwt.sign(
@@ -19,6 +21,7 @@ async function authenticateToken(token) {
         process.env.TOKEN_SECRET
     );
 }
+
 
 module.exports = {
     generateAccessToken,
