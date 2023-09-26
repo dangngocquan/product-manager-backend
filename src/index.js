@@ -111,8 +111,8 @@ app.use(passport.session());
 
 app.set('view engine', 'ejs');
 
-app.get('/success', (req, res) => res.send(userProfile));
-app.get('/error', (req, res) => res.send("error logging in"));
+app.get('/auth/google/success', (req, res) => res.status(200).send(userProfile));
+app.get('/auth/google/error', (req, res) => res.status(401).send("Error logging in"));
 
 passport.serializeUser(function(user, cb) {
   cb(null, user);
@@ -130,7 +130,8 @@ const GOOGLE_CLIENT_SECRET = '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';
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://product-manager-orcc.onrender.com/auth/google/callback"
+    // callbackURL: "https://product-manager-orcc.onrender.com/auth/google/callback"
+    callbackURL: "http://localhost:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
       userProfile=profile;
@@ -142,10 +143,10 @@ app.get('/auth/google',
   passport.authenticate('google', { scope : ['profile', 'email'] }));
  
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/error' }),
+  passport.authenticate('google', { failureRedirect: '/auth/google/error' }),
   function(req, res) {
     // Successful authentication, redirect success.
-    res.redirect('/success');
+    res.redirect('/auth/google/success');
   });
 
 

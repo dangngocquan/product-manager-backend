@@ -52,16 +52,6 @@ async function loginAccount(formData) {
 async function createNewAccount(formData = {}) {
     // Insert into table `accounts`
     var sql = 
-        `WITH new_account AS (` + 
-        `    INSERT INTO accounts (username, password) ` + 
-        `    VALUES (\'${formData.username}\', \'${formData.password}\') ` + 
-        `    RETURNING id` + 
-        `) ` + 
-        `INSERT INTO clients (account_id, nickname) ` + 
-        `VALUES (` +
-            `(SELECT id FROM new_account), ` + 
-            `\'${formData.nickname}\' ` + 
-        `)`;
         `with new_account as (
             insert into accounts (
                 username, 
@@ -89,6 +79,34 @@ async function createNewAccount(formData = {}) {
     return res;
 }
 
+
+async function createNewAccountWithGoogle(formData = {}) {
+    // Insert into table `accounts`
+    var sql = 
+        `with new_account as (
+            insert into accounts (
+                email
+            ) values (
+                '${formData.email}'
+            ) returning id
+        ), 
+        new_client as (
+            insert into clients (
+                account_id,
+                nickname
+            ) values (
+                (select id from new_account),
+                '${formData.nickname}'
+            ) returning id
+        ) insert into carts (
+            owner_id
+        ) values (
+            (select id from new_client)
+        )`;
+    
+    const res = await db.query(sql);
+    return res;
+}
 
 
 // [PATCH]
