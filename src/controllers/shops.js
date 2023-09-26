@@ -1,5 +1,5 @@
 const service = require('../services/shops');
-const auth = require('../services/auth');
+const auth = require('../services/auths');
 const role = require('../services/role');
 
 // [GET]

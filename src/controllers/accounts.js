@@ -1,8 +1,9 @@
 const service = require('../services/accounts');
-const auth = require('../services/auth');
+const auth = require('../services/auths');
 const serviceHistoryLogins = require('../services/historyLogins');
 
 // [GET]
+
 async function checkExistUsername(req, res, next) {
     try {
         var ids = (await service.getIdByUsername(req.query.username)).ids;
@@ -59,8 +60,10 @@ async function loginAccount(req, res, next) {
 
 async function loginAccountWithGoogle(req, res, next) {
     try {
-        const accountInformations = (await service.loginAccountWithGoogle(req.body)).accountInformations;
+        const googleProfile = await auth.getGoogleProfileByIdToken(req.body.token);
+        const accountInformations = (await service.loginAccountWithGoogle(googleProfile)).accountInformations;
         res.type('json');
+        console.log(accountInformations);
         if (accountInformations.length > 0) {
             var [account, ] = accountInformations;
             const token = await auth.generateAccessToken(account);
@@ -75,7 +78,7 @@ async function loginAccountWithGoogle(req, res, next) {
             }));
         } else {
             res.status(200).send(JSON.stringify({
-                "message": "Username or password incorrect.",
+                "message": "Don't have account compare to this email",
                 "token": null
             }));
         }

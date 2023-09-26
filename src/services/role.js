@@ -1,4 +1,4 @@
-const auth = require('./auth');
+const auth = require('./auths');
 const serviceShops = require('./shops');
 const serviceProducts = require('./products');
 const serviceCarts = require('./carts');

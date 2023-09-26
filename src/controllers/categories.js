@@ -1,5 +1,5 @@
 const serviceCategories = require('../services/categories');
-const auth = require('../services/auth');
+const auth = require('../services/auths');
 const role = require('../services/role');
 
 
