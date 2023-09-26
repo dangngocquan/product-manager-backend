@@ -130,8 +130,8 @@ const GOOGLE_CLIENT_SECRET = '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';
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    // callbackURL: "https://product-manager-orcc.onrender.com/auth/google/callback"
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: "https://product-manager-orcc.onrender.com/auth/google/callback"
+    // callbackURL: "http://localhost:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
       userProfile=profile;
