@@ -12,6 +12,17 @@ async function getIdByUsername(username) {
     }
 }
 
+async function getIdByEmail(email) {
+    var sql =   
+        `SELECT id FROM accounts ` +
+        `WHERE status != 'deleted' AND email = '${email}'`;
+    
+    var ids = await db.query(sql);
+    return {
+        ids
+    }
+}
+
 async function loginAccount(formData) {
     var sql = 
         `with account as (
@@ -24,6 +35,42 @@ async function loginAccount(formData) {
                     epoch from time_registered
                 ) as time_registered from accounts where (
                     status != 'deleted' AND username = '${formData.username}' AND password = '${formData.password}'
+                )
+        ) select clients.id AS id, 
+            username, 
+            password, 
+            status, 
+            type, 
+            time_registered,
+            nickname, 
+            email, 
+            phone_number, 
+            gender, 
+            extract(epoch from birthday) as birthday, 
+            portrait,
+            carts.id as cart_id from (
+                account join clients on account.id = clients.account_id
+            ) join carts on clients.id = carts.owner_id`;
+
+    const accountInformations = await db.query(sql);
+    return {
+        accountInformations: accountInformations
+    }
+}
+
+async function loginAccountWithGoogle(formData) {
+    var sql = 
+        `with account as (
+            select id,
+                username, 
+                password, 
+                status, 
+                type, 
+                extract(
+                    epoch from time_registered
+                ) as time_registered,
+                email from accounts where (
+                    status != 'deleted' AND email = '${formData.email}'
                 )
         ) select clients.id AS id, 
             username, 
@@ -122,7 +169,10 @@ async function createNewAccountWithGoogle(formData = {}) {
 module.exports = {
     // [GET]
     getIdByUsername,
+    getIdByEmail,
     loginAccount,
+    loginAccountWithGoogle,
     // [POST]
-    createNewAccount
+    createNewAccount,
+    createNewAccountWithGoogle
 }
