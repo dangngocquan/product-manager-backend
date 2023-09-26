@@ -123,10 +123,10 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 /*  Google AUTH  */
- 
+dotenv.config();
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const GOOGLE_CLIENT_ID = '307003734230-a674ltn77dujprfqmdqd2r370nddmcll.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = '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';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
