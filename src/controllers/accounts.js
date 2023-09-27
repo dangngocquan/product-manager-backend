@@ -61,9 +61,8 @@ async function loginAccount(req, res, next) {
 async function loginAccountWithGoogle(req, res, next) {
     try {
         const googleProfile = await auth.getGoogleProfileByIdToken(req.body.token);
-        const accountInformations = (await service.loginAccountWithGoogle(googleProfile)).accountInformations;
+        var accountInformations = (await service.loginAccountWithGoogle(googleProfile)).accountInformations;
         res.type('json');
-        console.log(accountInformations);
         if (accountInformations.length > 0) {
             var [account, ] = accountInformations;
             const token = await auth.generateAccessToken(account);
@@ -77,10 +76,29 @@ async function loginAccountWithGoogle(req, res, next) {
                 "token": token
             }));
         } else {
-            res.status(200).send(JSON.stringify({
-                "message": "Don't have account compare to this email",
-                "token": null
-            }));
+            const result = await service.createNewAccountWithGoogle({
+                "email": googleProfile.email,
+                "nickname": googleProfile.name
+            });
+            if (result) {
+                accountInformations = (await service.loginAccountWithGoogle(googleProfile)).accountInformations;
+                var [account, ] = accountInformations;
+                const token = await auth.generateAccessToken(account);
+
+                // Save history login
+                await serviceHistoryLogins.insertHistory(account.id);
+
+                // Return response to client
+                res.status(200).send(JSON.stringify({
+                    "message": "Login account successful.",
+                    "token": token
+                }));
+            } else {
+                res.type('json');
+                res.status(500).send(JSON.stringify({
+                    "message": "Login account failed."
+                }));
+            }  
         }
     } catch (err) {
         console.error("Error while login account. ",  err.message);
@@ -160,22 +178,25 @@ async function createNew(req, res, next) {
 
 async function createNewWithGoogle(req, res, next) {
     try {
-        if (req.body.email === undefined || 
-            req.body.nickname === undefined
+        if (req.body.token === undefined
             ) {
             res.type('json');
             res.status(400).send(JSON.stringify({
                 "message": "Request can't be processed."
             }));
         } else {
-            var ids = (await service.getIdByEmail(req.body.email)).ids;
+            const googleProfile = await auth.getGoogleProfileByIdToken(req.body.token);
+            var ids = (await service.getIdByEmail(googleProfile.email)).ids;
             if (ids.length > 0) {
                 res.type('json');
-                res.status(409).send(JSON.stringify({
+                res.status(201).send(JSON.stringify({
                     "message": "Email already used for another account."
                 }));
             } else {
-                const result = await service.createNewAccountWithGoogle(req.body);
+                const result = await service.createNewAccountWithGoogle({
+                    "email": googleProfile.email,
+                    "nickname": googleProfile.name
+                });
                 if (result) {
                     res.type('json');
                     res.status(201).send(JSON.stringify({
