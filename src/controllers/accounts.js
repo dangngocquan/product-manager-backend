@@ -137,6 +137,7 @@ async function getInformationsByToken(req, res, next) {
 async function createNew(req, res, next) {
     try {
         if (req.body.username === undefined || 
+            req.body.email === undefined || 
             req.body.password === undefined || 
             req.body.nickname === undefined
             ) {
@@ -146,10 +147,11 @@ async function createNew(req, res, next) {
             }));
         } else {
             var ids = (await service.getIdByUsername(req.body.username)).ids;
-            if (ids.length > 0) {
+            var idss = (await service.getIdByEmail(req.body.email)).ids;
+            if (ids.length > 0 || idss.length > 0) {
                 res.type('json');
                 res.status(409).send(JSON.stringify({
-                    "message": "Username already exists."
+                    "message": "Username or email already exists."
                 }));
             } else {
                 const result = await service.createNewAccount(req.body);
