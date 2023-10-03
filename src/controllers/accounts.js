@@ -1,3 +1,4 @@
+
 const service = require('../services/accounts');
 const auth = require('../services/auths');
 const serviceHistoryLogins = require('../services/historyLogins');
@@ -136,36 +137,40 @@ async function getInformationsByToken(req, res, next) {
 // [POST]
 async function createNew(req, res, next) {
     try {
-        if (req.body.username === undefined || 
+        if (
             req.body.email === undefined || 
-            req.body.password === undefined || 
-            req.body.nickname === undefined
-            ) {
+            req.body.otp === undefined
+        ) {
             res.type('json');
             res.status(400).send(JSON.stringify({
                 "message": "Request can't be processed."
             }));
         } else {
-            var ids = (await service.getIdByUsername(req.body.username)).ids;
-            var idss = (await service.getIdByEmail(req.body.email)).ids;
-            if (ids.length > 0 || idss.length > 0) {
-                res.type('json');
-                res.status(409).send(JSON.stringify({
-                    "message": "Username or email already exists."
-                }));
-            } else {
-                const result = await service.createNewAccount(req.body);
+            const infors = (await auth.authenticateOTP(req.body.email, req.body.otp)).infors;
+            if (infors.length > 0) {
+                var data = infors[0];
+                var formdata = {
+                    "email" : data.email,
+                    "username": data.username,
+                    "password": data.password,
+                    "nickname": data.nickname
+                }
+                const result = await service.createNewAccount(formdata);
                 if (result) {
                     res.type('json');
                     res.status(201).send(JSON.stringify({
-                        "message": "Create new account successfully."
+                        "message": "Verify email successfully."
                     }));
                 } else {
                     res.type('json');
                     res.status(500).send(JSON.stringify({
-                        "message": "Create new account failed."
+                        "message": "Verify email failed."
                     }));
-                }  
+                }
+            } else {
+                res.status(409).send(JSON.stringify({
+                    "message": "Verify email failed."
+                }));
             }
         }
     } catch (err) {

@@ -103,10 +103,12 @@ async function createNewAccount(formData = {}) {
         `with new_account as (
             insert into accounts (
                 username, 
-                password
+                password,
+                email
             ) values (
                 '${formData.username}', 
-                '${formData.password}'
+                '${formData.password}',
+                '${formData.email}'
             ) returning id
         ), 
         new_client as (

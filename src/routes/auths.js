@@ -10,6 +10,7 @@ const controller = require('../controllers/auths');
 
 // [POST]
 router.post('/', controller.getGoogleProfile);
+router.post('/verify-email', controller.verifyEmail);
 
 
 
