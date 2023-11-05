@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const multer = require('multer');
 
 const app = express();
 dotenv.config();
@@ -28,8 +29,27 @@ const routerSliders = require('./routes/sliders');
 const routerCarts = require('./routes/carts');
 const routerAuths = require('./routes/auths');
 
+// Upload
+const imageUploadPath = 'D:/Study/NodeJS';
 
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, imageUploadPath)
+  },
+  filename: function(req, file, cb) {
+    cb(null, `${file.fieldname}_dateVal_${Date.now()}_${file.originalname}`)
+  }
+})
 
+const imageUpload = multer({storage: storage})
+
+app.post('/uploads', imageUpload.array("files", 1), (req, res) => {
+  console.log('POST request received to /image-upload.');
+  console.log('Axios POST body: ', req.body);
+  res.send('POST request recieved on server to /image-upload.');
+})
+
+// routes
 app.get('/', (req, res) => {
     res.send("Home");
 });

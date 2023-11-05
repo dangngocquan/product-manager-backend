@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/dangngocquan/product-manager-backend#readme",
   "dependencies": {
-    "axios": "^1.5.0",
+    "axios": "^1.6.0",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
@@ -26,6 +27,7 @@
     "express-session": "^1.17.3",
     "googleapis": "^126.0.1",
     "jsonwebtoken": "^9.0.1",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.0",
     "nodemailer": "^6.9.5",
     "passport": "^0.6.0",
