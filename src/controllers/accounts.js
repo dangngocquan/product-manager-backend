@@ -228,6 +228,26 @@ async function createNewWithGoogle(req, res, next) {
 } 
 
 
+async function updatePortraitAccount(req, res, next) {
+    try {
+        const clientInformations = await auth.authenticateToken(req.body.token);
+        console.log(clientInformations);
+        await service.updatePortraitAccount(clientInformations.id, req.body.image);
+        res.type('json');
+        res.status(200).send(JSON.stringify({
+            "message": "Update avatar successful.",
+        }));
+    } catch (err) {
+        console.error("Error while update avatar client. ",  err.message);
+        res.type('json');
+        res.status(500).send(JSON.stringify({
+            "message": "Update avatar failed."
+        }));
+        next(err);
+    }
+}
+
+
 
 // [PATCH]
 
@@ -248,5 +268,6 @@ module.exports = {
     getInformationsByToken,
     // [POST]
     createNew,
-    createNewWithGoogle
+    createNewWithGoogle,
+    updatePortraitAccount
 }

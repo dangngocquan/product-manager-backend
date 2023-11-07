@@ -158,6 +158,13 @@ async function createNewAccountWithGoogle(formData = {}) {
     return res;
 }
 
+async function updatePortraitAccount(id, portrait) {
+    var sql = 
+        `update clients set portrait = '${portrait}' where id = '${id}'`;
+        console.log(sql);
+    await db.query(sql);
+}
+
 
 // [PATCH]
 
@@ -177,5 +184,6 @@ module.exports = {
     loginAccountWithGoogle,
     // [POST]
     createNewAccount,
-    createNewAccountWithGoogle
+    createNewAccountWithGoogle,
+    updatePortraitAccount
 }

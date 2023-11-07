@@ -1,6 +1,5 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const multer = require('multer');
 
 const app = express();
 dotenv.config();
@@ -28,26 +27,28 @@ const routerProducts = require('./routes/products');
 const routerSliders = require('./routes/sliders');
 const routerCarts = require('./routes/carts');
 const routerAuths = require('./routes/auths');
+const routerUploads = require('./routes/uploads');
 
-// Upload
-const imageUploadPath = 'D:/Study/NodeJS';
+// // Upload localhost
+// const imageUploadPath = 'D:/Study/NodeJS';
 
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, imageUploadPath)
-  },
-  filename: function(req, file, cb) {
-    cb(null, `${file.fieldname}_dateVal_${Date.now()}_${file.originalname}`)
-  }
-})
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, imageUploadPath)
+//   },
+//   filename: function(req, file, cb) {
+//     cb(null, `${file.fieldname}_dateVal_${Date.now()}_${file.originalname}`)
+//   }
+// })
 
-const imageUpload = multer({storage: storage})
+// const imageUpload = multer({storage: storage})
 
-app.post('/uploads', imageUpload.array("files", 1), (req, res) => {
-  console.log('POST request received to /image-upload.');
-  console.log('Axios POST body: ', req.body);
-  res.send('POST request recieved on server to /image-upload.');
-})
+// app.post('/uploads', imageUpload.array("files", 1), (req, res) => {
+//   console.log('POST request received to /image-upload.');
+//   console.log('Axios POST body: ', req.body);
+//   res.send('POST request recieved on server to /image-upload.');
+// })
+
 
 // routes
 app.get('/', (req, res) => {
@@ -61,6 +62,7 @@ app.use('/products', routerProducts);
 app.use('/sliders', routerSliders);
 app.use('/carts', routerCarts);
 app.use('/auths', routerAuths);
+app.use('/uploads', routerUploads);
 
 
 app.listen(port, () => {
