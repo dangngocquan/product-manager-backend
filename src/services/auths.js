@@ -31,9 +31,10 @@ async function getGoogleProfileByIdToken(token) {
     const {OAuth2Client} = require('google-auth-library');
     const client = new OAuth2Client();
     async function verify() {
+        dotenv.config();
         const ticket = await client.verifyIdToken({
             idToken: token,
-            audience: '307003734230-a674ltn77dujprfqmdqd2r370nddmcll.apps.googleusercontent.com',  // Specify the CLIENT_ID of the app that accesses the backend
+            audience: process.env.GOOGLE_CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
             // Or, if multiple clients access the backend:
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });

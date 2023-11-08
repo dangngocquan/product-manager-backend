@@ -132,12 +132,13 @@ async function createNewAccount(formData = {}) {
 
 async function createNewAccountWithGoogle(formData = {}) {
     // Insert into table `accounts`
+    var rand = formData.email + Date.now();
     var sql = 
         `with new_account as (
             insert into accounts (
-                email
+                username, password, email
             ) values (
-                '${formData.email}'
+                '${rand}', '${rand}', '${formData.email}'
             ) returning id
         ), 
         new_client as (
@@ -161,7 +162,6 @@ async function createNewAccountWithGoogle(formData = {}) {
 async function updatePortraitAccount(id, portrait) {
     var sql = 
         `update clients set portrait = '${portrait}' where id = '${id}'`;
-        console.log(sql);
     await db.query(sql);
 }
 

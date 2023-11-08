@@ -231,7 +231,6 @@ async function createNewWithGoogle(req, res, next) {
 async function updatePortraitAccount(req, res, next) {
     try {
         const clientInformations = await auth.authenticateToken(req.body.token);
-        console.log(clientInformations);
         await service.updatePortraitAccount(clientInformations.id, req.body.image);
         res.type('json');
         res.status(200).send(JSON.stringify({
