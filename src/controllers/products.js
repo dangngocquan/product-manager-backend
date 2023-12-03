@@ -5,7 +5,8 @@ const role = require('../services/role');
 // [GET]
 async function getProductsByCategoryId(req, res, next) {
     try {
-        var products = await service.getProductsByCategoryId(req.params.categoryId, req.params.page);
+        var products = await service.getProductsByCategoryId(
+            req.params.categoryId, req.params.page, req.params.order, req.params.sortBy);
         res.type('json');
         res.status(200).send(JSON.stringify({
             "message": "Get products successfully.",

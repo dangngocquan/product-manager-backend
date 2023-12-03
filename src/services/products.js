@@ -5,7 +5,7 @@ const helper = require('../utils/helper');
 const serviceCategories = require('./categories');
 
 // [GET]
-async function getProductsByCategoryId(categoryId = 0, page = 0) {
+async function getProductsByCategoryId(categoryId = 0, page = 0, order = 0, sortBy = "default") {
     const categories = (await serviceCategories.getCategoriesTree(categoryId)).categoriesArray;
     const categoryIds = categories.map((category) => category.id);
     var categoryIdsSQL = '(' + categoryIds.join(', ') + ')';
@@ -16,7 +16,9 @@ async function getProductsByCategoryId(categoryId = 0, page = 0) {
         `WHERE status = \'normal\' AND id IN (` + 
             `SELECT product_id FROM products_of_categories ` + 
             `WHERE category_id IN ${categoryIdsSQL} ` + 
-        `) `;
+        `) ` + 
+        `ORDER BY ` + ((sortBy == "default")? `id ` : `${sortBy} `) + 
+        ((order == 0)? `ASC` : `DESC`);
     if (page > 0) {
         const limit = general.listPerPage;
         const offset = helper.getOffset(page, general.listPerPage);
