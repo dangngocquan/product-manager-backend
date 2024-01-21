@@ -44,7 +44,7 @@ async function loginAccount(formData) {
             type, 
             time_registered,
             nickname, 
-            email, 
+            account.email, 
             phone_number, 
             gender, 
             extract(epoch from birthday) as birthday, 
